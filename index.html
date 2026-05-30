@@ -435,6 +435,35 @@
       nav .nav-links { display: none; }
     }
 
+    /* Language switcher */
+    .lang-switch { position: relative; }
+    .lang-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(168,85,247,.1); border: 1.5px solid var(--border2);
+      color: var(--text); border-radius: 8px; padding: 9px 14px;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: all .2s; white-space: nowrap;
+    }
+    .lang-btn:hover { border-color: var(--primary); }
+    .lang-caret { font-size: 10px; opacity: .7; }
+    .lang-menu {
+      position: absolute; top: calc(100% + 8px); right: 0;
+      background: var(--card); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 6px; min-width: 180px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.6); z-index: 200;
+      display: none; max-height: 70vh; overflow-y: auto;
+    }
+    .lang-menu.open { display: block; }
+    .lang-opt {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: 8px; cursor: pointer;
+      font-size: 14px; color: var(--text); transition: background .15s;
+    }
+    .lang-opt:hover { background: rgba(168,85,247,.15); }
+    .lang-opt.active { background: rgba(168,85,247,.22); font-weight: 700; }
+    .lang-opt .lang-native { color: var(--muted); font-size: 12px; margin-left: auto; }
+    @media (max-width: 700px) { .lang-btn span:not(.lang-caret) { display: none; } }
+
     /* Scroll reveal */
     .reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
     .reveal.visible { opacity: 1; transform: none; }
@@ -450,14 +479,20 @@
       <span class="nav-logo">Oriven</span>
     </span>
     <div class="nav-links">
-      <a href="#demos">See it in action</a>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#faq">FAQ</a>
+      <a href="#demos" data-i18n="nav.demos">See it in action</a>
+      <a href="#features" data-i18n="nav.features">Features</a>
+      <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
     </div>
-    <div style="display:flex;gap:10px">
-      <a href="#pricing" class="btn btn-outline" style="padding:9px 20px;font-size:14px;">Pricing</a>
-      <a href="#download" class="btn btn-primary" style="padding:9px 20px;font-size:14px;">Download Free</a>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="lang-switch" id="langSwitch">
+        <button class="lang-btn" id="langBtn" type="button" aria-label="Language">
+          🌐 <span id="langCurrent">English</span> <span class="lang-caret">▾</span>
+        </button>
+        <div class="lang-menu" id="langMenu"></div>
+      </div>
+      <a href="#pricing" class="btn btn-outline" style="padding:9px 20px;font-size:14px;" data-i18n="nav.pricingBtn">Pricing</a>
+      <a href="#download" class="btn btn-primary" style="padding:9px 20px;font-size:14px;" data-i18n="nav.download">Download Free</a>
     </div>
   </div>
 </nav>
@@ -469,21 +504,21 @@
   <div class="orb hero-orb3"></div>
   <div class="hero-content">
     <img src="oriven-banner.jpg" alt="Oriven — Private AI Story Companion" style="width:100%;max-width:560px;height:auto;margin:0 auto 32px;display:block;border-radius:20px;box-shadow:0 0 70px rgba(168,85,247,.45), 0 24px 70px rgba(0,0,0,.55)"/>
-    <div class="hero-badge">🔒 Your conversations never leave your device</div>
+    <div class="hero-badge"><span data-i18n="hero.badge">🔒 Your conversations never leave your device</span></div>
     <h1>
-      <span class="grad-text">AI characters</span><br />
-      that live on<br />your computer.
+      <span class="grad-text" data-i18n="hero.h1a">AI characters</span><br />
+      <span data-i18n="hero.h1b">that live on</span><br /><span data-i18n="hero.h1c">your computer.</span>
     </h1>
-    <p>Oriven is a private AI chat &amp; story companion — no cloud, no account, no monthly fee. Characters that remember you, speak with you, and grow with you.</p>
+    <p data-i18n="hero.sub">Oriven is a private AI chat &amp; story companion — no cloud, no account, no monthly fee. Characters that remember you, speak with you, and grow with you.</p>
     <div class="hero-btns">
-      <a href="#download" class="btn btn-primary btn-lg" id="download">⬇ Download Free</a>
-      <a href="#demos" class="btn btn-outline btn-lg">See it in action ↓</a>
+      <a href="#download" class="btn btn-primary btn-lg" id="download" data-i18n="hero.download">⬇ Download Free</a>
+      <a href="#demos" class="btn btn-outline btn-lg" data-i18n="hero.see">See it in action ↓</a>
     </div>
     <div class="trust">
-      <span>Runs offline</span>
-      <span>No account</span>
-      <span>One-time purchase</span>
-      <span>Windows &amp; macOS</span>
+      <span data-i18n="trust.offline">Runs offline</span>
+      <span data-i18n="trust.account">No account</span>
+      <span data-i18n="trust.onetime">One-time purchase</span>
+      <span data-i18n="trust.os">Windows &amp; macOS</span>
     </div>
   </div>
 </section>
@@ -491,14 +526,14 @@
 <!-- ══ DEMO SECTION ══════════════════════════════════ -->
 <section class="section" id="demos">
   <div class="container">
-    <div class="label">Live demos</div>
-    <h2 class="section-title">See what your characters can do</h2>
-    <p class="section-sub">Real conversations from Oriven — running entirely on your machine, privately.</p>
+    <div class="label" data-i18n="demos.label">Live demos</div>
+    <h2 class="section-title" data-i18n="demos.title">See what your characters can do</h2>
+    <p class="section-sub" data-i18n="demos.sub">Real conversations from Oriven — running entirely on your machine, privately.</p>
 
     <div class="demo-tabs">
-      <button class="demo-tab active" onclick="showDemo('lotr')">⚔️ Epic Roleplay</button>
-      <button class="demo-tab" onclick="showDemo('romance')">💕 Romance</button>
-      <button class="demo-tab" onclick="showDemo('group')">👥 Group Chat</button>
+      <button class="demo-tab active" onclick="showDemo('lotr')" data-i18n="demos.tab1">⚔️ Epic Roleplay</button>
+      <button class="demo-tab" onclick="showDemo('romance')" data-i18n="demos.tab2">💕 Romance</button>
+      <button class="demo-tab" onclick="showDemo('group')" data-i18n="demos.tab3">👥 Group Chat</button>
     </div>
 
     <!-- ── DEMO 1: Lord of the Rings Roleplay ── -->
@@ -793,20 +828,20 @@
 <!-- ══ PROBLEM ══════════════════════════════════════ -->
 <section class="section section-alt">
   <div class="container">
-    <div class="label">The problem</div>
-    <h2 class="section-title" style="max-width:700px;margin-left:auto;margin-right:auto">Tired of AI that watches, filters, and bills you every month?</h2>
+    <div class="label" data-i18n="problem.label">The problem</div>
+    <h2 class="section-title" style="max-width:700px;margin-left:auto;margin-right:auto" data-i18n="problem.title">Tired of AI that watches, filters, and bills you every month?</h2>
     <p style="text-align:center;color:var(--muted);font-size:18px;max-width:640px;margin:0 auto 0;line-height:1.8">
       The apps everyone uses keep your most personal conversations <strong style="color:var(--text)">on their servers</strong>. They filter what your characters can say. They reset personalities you spent weeks building. And they charge you every single month — <strong style="color:var(--text)">forever</strong>.
     </p>
-    <p style="text-align:center;font-size:22px;font-weight:700;margin-top:32px;font-style:italic;color:var(--text)">"You shouldn't have to rent a relationship."</p>
+    <p style="text-align:center;font-size:22px;font-weight:700;margin-top:32px;font-style:italic;color:var(--text)" data-i18n="problem.quote">"You shouldn't have to rent a relationship."</p>
   </div>
 </section>
 
 <!-- ══ FEATURES ══════════════════════════════════════ -->
 <section class="section" id="features">
   <div class="container">
-    <div class="label">Why Oriven</div>
-    <h2 class="section-title">Built different. By design.</h2>
+    <div class="label" data-i18n="features.label">Why Oriven</div>
+    <h2 class="section-title" data-i18n="features.title">Built different. By design.</h2>
     <p class="section-sub">Everything you loved about AI companions — without the surveillance, the filters, or the monthly bill.</p>
     <div class="features-grid">
       <div class="feat-card reveal"><div class="feat-icon">🔒</div><h3>100% private — your computer</h3><p>Your chats, characters, and memories live on your device. Nothing uploaded. No account. Unplug the internet — keep talking.</p></div>
@@ -851,14 +886,14 @@
 <!-- ══ PRICING ══════════════════════════════════════ -->
 <section class="section" id="pricing">
   <div class="container">
-    <div class="label">Pricing</div>
-    <h2 class="section-title">Simple pricing. No subscription. <span class="grad-text">Ever.</span></h2>
-    <p class="section-sub">Start free. Upgrade once. Own it forever.</p>
+    <div class="label" data-i18n="pricing.label">Pricing</div>
+    <h2 class="section-title" data-i18n="pricing.title">Simple pricing. No subscription. Ever.</h2>
+    <p class="section-sub" data-i18n="pricing.sub">Start free. Upgrade once. Own it forever.</p>
     <div class="pricing-grid">
       <div class="price-card">
-        <div class="price-name">Free</div>
+        <div class="price-name" data-i18n="pricing.free">Free</div>
         <div class="price-amount"><sup>$</sup>0</div>
-        <div class="price-period">Forever free</div>
+        <div class="price-period" data-i18n="pricing.freeNote">Forever free</div>
         <ul class="price-feats">
           <li><span class="ic">✓</span> Full private, local chat</li>
           <li><span class="ic">✓</span> Bring your own model or API key</li>
@@ -867,13 +902,13 @@
           <li><span class="ic">✓</span> Windows &amp; macOS</li>
           <li><span class="ic" style="color:var(--muted)">—</span> <span style="color:var(--muted)">No voice, images, group, story mode</span></li>
         </ul>
-        <a href="#download" class="btn btn-outline" style="width:100%;justify-content:center">Download Free</a>
+        <a href="#download" class="btn btn-outline" style="width:100%;justify-content:center" data-i18n="pricing.getFree">Download Free</a>
       </div>
       <div class="price-card featured">
-        <div class="price-badge">⭐ MOST POPULAR</div>
-        <div class="price-name">Pro</div>
+        <div class="price-badge" data-i18n="pricing.popular">⭐ MOST POPULAR</div>
+        <div class="price-name" data-i18n="pricing.pro">Pro</div>
         <div class="price-amount"><sup>$</sup>39 <span class="old">$49</span></div>
-        <div class="price-period">One-time · Launch price</div>
+        <div class="price-period" data-i18n="pricing.proNote">One-time · Launch price</div>
         <ul class="price-feats">
           <li><span class="ic">✓</span> Everything in Free</li>
           <li><span class="ic">✓</span> Unlimited characters &amp; personas</li>
@@ -885,7 +920,7 @@
           <li><span class="ic">✓</span> All 10 languages</li>
           <li><span class="ic">✓</span> Free minor updates</li>
         </ul>
-        <a href="https://orivenapp.lemonsqueezy.com/checkout/buy/92fb3bc5-4dab-4190-a082-701a7bfb70d5" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;justify-content:center">Get Pro — $39 one-time</a>
+        <a href="https://orivenapp.lemonsqueezy.com/checkout/buy/92fb3bc5-4dab-4190-a082-701a7bfb70d5" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;justify-content:center" data-i18n="pricing.getPro">Get Pro — $39 one-time</a>
         <p class="price-note">Pay once · Free minor updates · 14-day money-back guarantee</p>
         <div class="price-value">Cloud companions cost <strong>$120–240/year forever.</strong><br/>Oriven pays for itself in under 5 months — then free for life.</div>
       </div>
@@ -897,8 +932,8 @@
 <!-- ══ FAQ ══════════════════════════════════════════ -->
 <section class="section section-alt" id="faq">
   <div class="container">
-    <div class="label">FAQ</div>
-    <h2 class="section-title">Common questions</h2>
+    <div class="label" data-i18n="faq.label">FAQ</div>
+    <h2 class="section-title" data-i18n="faq.title">Common questions</h2>
     <div class="faq-wrap">
       <details open><summary>Is it hard to set up?</summary><div class="faq-body">No. The installer walks you through it. Use the built-in model to start instantly, or paste an API key in under a minute — no technical knowledge required.</div></details>
       <details><summary>Is my data really private?</summary><div class="faq-body">Yes. No account, no telemetry on your conversations. With a local model, nothing you say ever touches the internet. Your character files live only on your computer.</div></details>
@@ -915,15 +950,15 @@
   <div class="orb" style="width:600px;height:600px;background:#7c3aed;bottom:-200px;left:-100px;opacity:.2"></div>
   <div class="orb" style="width:400px;height:400px;background:#ec4899;bottom:-100px;right:-50px;opacity:.2"></div>
   <div class="container" style="position:relative;z-index:1">
-    <h2><span class="grad-text">Your AI. Your stories.</span><br/>Your machine.</h2>
-    <p>Start free today. Keep your conversations where they belong — with you.</p>
-    <a href="#download" class="btn btn-primary btn-lg">⬇ Download Oriven — Free</a>
-    <p style="color:var(--muted);font-size:13px;margin-top:18px">Free version is fully functional · Upgrade to Pro once, no subscription · Your data never leaves your device.</p>
+    <h2><span class="grad-text" data-i18n="final.titleA">Your AI. Your stories.</span><br/><span data-i18n="final.titleB">Your machine.</span></h2>
+    <p data-i18n="final.sub">Start free today. Keep your conversations where they belong — with you.</p>
+    <a href="#download" class="btn btn-primary btn-lg" data-i18n="final.download">⬇ Download Oriven — Free</a>
+    <p style="color:var(--muted);font-size:13px;margin-top:18px" data-i18n="final.note">Free version is fully functional · Upgrade to Pro once, no subscription · Your data never leaves your device.</p>
     <form class="waitlist" action="https://formspree.io/f/xojbbznj" method="POST">
-      <input type="email" name="email" placeholder="Get notified at launch — enter your email" required />
-      <button type="submit" class="btn btn-primary">Notify me</button>
+      <input type="email" name="email" placeholder="Get notified at launch — enter your email" data-i18n-ph="waitlist.placeholder" required />
+      <button type="submit" class="btn btn-primary" data-i18n="waitlist.btn">Notify me</button>
     </form>
-    <p class="form-note">No spam. One email when we launch. That's it.</p>
+    <p class="form-note" data-i18n="waitlist.note">No spam. One email when we launch. That's it.</p>
   </div>
 </section>
 
@@ -952,6 +987,217 @@
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* ===================== i18n — language switcher ===================== */
+  const LANGS = [
+    {code:'en', native:'English'},
+    {code:'es', native:'Español'},
+    {code:'zh', native:'中文'},
+    {code:'pt', native:'Português'},
+    {code:'ru', native:'Русский'},
+    {code:'ja', native:'日本語'},
+    {code:'de', native:'Deutsch'},
+    {code:'fr', native:'Français'},
+    {code:'ko', native:'한국어'},
+    {code:'tr', native:'Türkçe'},
+  ];
+
+  const I18N = {
+    es: {
+      "nav.demos":"Míralo en acción","nav.features":"Funciones","nav.pricing":"Precios","nav.faq":"Preguntas","nav.download":"Descargar gratis","nav.pricingBtn":"Precios",
+      "hero.badge":"🔒 Tus conversaciones nunca salen de tu dispositivo","hero.h1a":"Personajes de IA","hero.h1b":"que viven en","hero.h1c":"tu computadora.",
+      "hero.sub":"Oriven es un compañero privado de chat e historias con IA: sin nube, sin cuenta, sin cuota mensual. Personajes que te recuerdan, hablan contigo y crecen contigo.",
+      "hero.download":"⬇ Descargar gratis","hero.see":"Míralo en acción ↓",
+      "trust.offline":"Funciona sin conexión","trust.account":"Sin cuenta","trust.onetime":"Pago único","trust.os":"Windows y macOS",
+      "demos.label":"Demos en vivo","demos.title":"Mira lo que pueden hacer tus personajes","demos.sub":"Conversaciones reales de Oriven, ejecutándose por completo en tu equipo, en privado.",
+      "demos.tab1":"⚔️ Rol épico","demos.tab2":"💕 Romance","demos.tab3":"👥 Chat grupal",
+      "problem.label":"El problema","problem.title":"¿Cansado de una IA que te vigila, te filtra y te cobra cada mes?","problem.quote":"No deberías tener que alquilar una relación.",
+      "features.label":"Por qué Oriven","features.title":"Diferente por diseño.",
+      "pricing.label":"Precios","pricing.title":"Precio simple. Sin suscripción. Nunca.","pricing.sub":"Empieza gratis. Mejora una vez. Tuyo para siempre.",
+      "pricing.free":"Gratis","pricing.freeNote":"Gratis para siempre","pricing.pro":"Pro","pricing.proNote":"Pago único · Precio de lanzamiento","pricing.popular":"⭐ MÁS POPULAR","pricing.getFree":"Descargar gratis","pricing.getPro":"Obtener Pro — $39 pago único",
+      "faq.label":"Preguntas","faq.title":"Preguntas frecuentes",
+      "final.titleA":"Tu IA. Tus historias.","final.titleB":"Tu máquina.","final.sub":"Empieza gratis hoy. Mantén tus conversaciones donde pertenecen: contigo.","final.download":"⬇ Descargar Oriven — Gratis","final.note":"La versión gratuita es totalmente funcional · Mejora a Pro una vez, sin suscripción · Tus datos nunca salen de tu dispositivo.",
+      "waitlist.placeholder":"Avísame en el lanzamiento — tu correo","waitlist.btn":"Avísame","waitlist.note":"Sin spam. Un correo cuando lancemos. Nada más.",
+    },
+    zh: {
+      "nav.demos":"实际演示","nav.features":"功能","nav.pricing":"价格","nav.faq":"常见问题","nav.download":"免费下载","nav.pricingBtn":"价格",
+      "hero.badge":"🔒 你的对话永远不会离开你的设备","hero.h1a":"AI 角色","hero.h1b":"就住在","hero.h1c":"你的电脑里。",
+      "hero.sub":"Oriven 是一款私密的 AI 聊天与故事伙伴——无云端、无账号、无月费。角色会记住你、与你交谈、并与你一同成长。",
+      "hero.download":"⬇ 免费下载","hero.see":"实际演示 ↓",
+      "trust.offline":"离线运行","trust.account":"无需账号","trust.onetime":"一次性付费","trust.os":"Windows 和 macOS",
+      "demos.label":"实时演示","demos.title":"看看你的角色能做什么","demos.sub":"来自 Oriven 的真实对话——完全在你的电脑上私密运行。",
+      "demos.tab1":"⚔️ 史诗角色扮演","demos.tab2":"💕 恋爱","demos.tab3":"👥 群聊",
+      "problem.label":"问题所在","problem.title":"厌倦了监视你、审查你、每月还向你收费的 AI 吗？","problem.quote":"你不该花钱去“租”一段关系。",
+      "features.label":"为什么选择 Oriven","features.title":"从设计之初就与众不同。",
+      "pricing.label":"价格","pricing.title":"简单定价。永不订阅。","pricing.sub":"免费开始。一次升级。永久拥有。",
+      "pricing.free":"免费","pricing.freeNote":"永久免费","pricing.pro":"专业版","pricing.proNote":"一次性付费 · 上市价","pricing.popular":"⭐ 最受欢迎","pricing.getFree":"免费下载","pricing.getPro":"获取专业版 — $39 一次性",
+      "faq.label":"常见问题","faq.title":"常见问题",
+      "final.titleA":"你的 AI。你的故事。","final.titleB":"你的电脑。","final.sub":"今天免费开始。让你的对话留在它该在的地方——你身边。","final.download":"⬇ 免费下载 Oriven","final.note":"免费版功能完整 · 一次性升级专业版，无订阅 · 你的数据永不离开设备。",
+      "waitlist.placeholder":"上市时通知我 — 输入你的邮箱","waitlist.btn":"通知我","waitlist.note":"无垃圾邮件。上市时只发一封。仅此而已。",
+    },
+    pt: {
+      "nav.demos":"Veja em ação","nav.features":"Recursos","nav.pricing":"Preços","nav.faq":"Perguntas","nav.download":"Baixar grátis","nav.pricingBtn":"Preços",
+      "hero.badge":"🔒 Suas conversas nunca saem do seu dispositivo","hero.h1a":"Personagens de IA","hero.h1b":"que vivem no","hero.h1c":"seu computador.",
+      "hero.sub":"Oriven é um companheiro privado de chat e histórias com IA — sem nuvem, sem conta, sem mensalidade. Personagens que lembram de você, falam com você e crescem com você.",
+      "hero.download":"⬇ Baixar grátis","hero.see":"Veja em ação ↓",
+      "trust.offline":"Funciona offline","trust.account":"Sem conta","trust.onetime":"Pagamento único","trust.os":"Windows e macOS",
+      "demos.label":"Demos ao vivo","demos.title":"Veja o que seus personagens podem fazer","demos.sub":"Conversas reais do Oriven — rodando inteiramente na sua máquina, em privacidade.",
+      "demos.tab1":"⚔️ RPG épico","demos.tab2":"💕 Romance","demos.tab3":"👥 Chat em grupo",
+      "problem.label":"O problema","problem.title":"Cansado de uma IA que vigia, filtra e cobra de você todo mês?","problem.quote":"Você não deveria ter que alugar um relacionamento.",
+      "features.label":"Por que Oriven","features.title":"Diferente por design.",
+      "pricing.label":"Preços","pricing.title":"Preço simples. Sem assinatura. Nunca.","pricing.sub":"Comece grátis. Atualize uma vez. Seu para sempre.",
+      "pricing.free":"Grátis","pricing.freeNote":"Grátis para sempre","pricing.pro":"Pro","pricing.proNote":"Pagamento único · Preço de lançamento","pricing.popular":"⭐ MAIS POPULAR","pricing.getFree":"Baixar grátis","pricing.getPro":"Obter Pro — $39 único",
+      "faq.label":"Perguntas","faq.title":"Perguntas frequentes",
+      "final.titleA":"Sua IA. Suas histórias.","final.titleB":"Sua máquina.","final.sub":"Comece grátis hoje. Mantenha suas conversas onde elas pertencem — com você.","final.download":"⬇ Baixar Oriven — Grátis","final.note":"A versão grátis é totalmente funcional · Atualize para Pro uma vez, sem assinatura · Seus dados nunca saem do dispositivo.",
+      "waitlist.placeholder":"Avise-me no lançamento — seu e-mail","waitlist.btn":"Avise-me","waitlist.note":"Sem spam. Um e-mail no lançamento. Só isso.",
+    },
+    ru: {
+      "nav.demos":"Посмотреть в деле","nav.features":"Возможности","nav.pricing":"Цены","nav.faq":"Вопросы","nav.download":"Скачать бесплатно","nav.pricingBtn":"Цены",
+      "hero.badge":"🔒 Ваши разговоры никогда не покидают устройство","hero.h1a":"ИИ-персонажи","hero.h1b":"которые живут на","hero.h1c":"вашем компьютере.",
+      "hero.sub":"Oriven — приватный ИИ-компаньон для общения и историй: без облака, без аккаунта, без ежемесячной платы. Персонажи помнят вас, говорят с вами и растут вместе с вами.",
+      "hero.download":"⬇ Скачать бесплатно","hero.see":"Посмотреть в деле ↓",
+      "trust.offline":"Работает офлайн","trust.account":"Без аккаунта","trust.onetime":"Разовая покупка","trust.os":"Windows и macOS",
+      "demos.label":"Живые демо","demos.title":"Посмотрите, что умеют ваши персонажи","demos.sub":"Реальные диалоги в Oriven — полностью на вашем компьютере, приватно.",
+      "demos.tab1":"⚔️ Эпичный ролеплей","demos.tab2":"💕 Романтика","demos.tab3":"👥 Групповой чат",
+      "problem.label":"Проблема","problem.title":"Устали от ИИ, который следит, фильтрует и берёт с вас плату каждый месяц?","problem.quote":"Вы не должны арендовать отношения.",
+      "features.label":"Почему Oriven","features.title":"Иначе устроен. Намеренно.",
+      "pricing.label":"Цены","pricing.title":"Простая цена. Без подписки. Никогда.","pricing.sub":"Начните бесплатно. Обновите один раз. Ваше навсегда.",
+      "pricing.free":"Бесплатно","pricing.freeNote":"Бесплатно навсегда","pricing.pro":"Pro","pricing.proNote":"Разовый платёж · Цена запуска","pricing.popular":"⭐ ПОПУЛЯРНОЕ","pricing.getFree":"Скачать бесплатно","pricing.getPro":"Купить Pro — $39 разово",
+      "faq.label":"Вопросы","faq.title":"Частые вопросы",
+      "final.titleA":"Ваш ИИ. Ваши истории.","final.titleB":"Ваш компьютер.","final.sub":"Начните бесплатно сегодня. Пусть ваши разговоры остаются там, где им место — с вами.","final.download":"⬇ Скачать Oriven — Бесплатно","final.note":"Бесплатная версия полностью функциональна · Обновление до Pro один раз, без подписки · Ваши данные не покидают устройство.",
+      "waitlist.placeholder":"Уведомить о запуске — ваш e-mail","waitlist.btn":"Уведомить","waitlist.note":"Без спама. Одно письмо на запуске. И всё.",
+    },
+    ja: {
+      "nav.demos":"動作を見る","nav.features":"機能","nav.pricing":"料金","nav.faq":"よくある質問","nav.download":"無料ダウンロード","nav.pricingBtn":"料金",
+      "hero.badge":"🔒 会話があなたの端末から出ることはありません","hero.h1a":"AIキャラクターが","hero.h1b":"あなたの","hero.h1c":"パソコンに住む。",
+      "hero.sub":"Oriven はプライベートな AI チャット＆物語コンパニオン。クラウドなし、アカウントなし、月額料金なし。あなたを覚え、語りかけ、共に成長するキャラクター。",
+      "hero.download":"⬇ 無料ダウンロード","hero.see":"動作を見る ↓",
+      "trust.offline":"オフラインで動作","trust.account":"アカウント不要","trust.onetime":"買い切り","trust.os":"Windows と macOS",
+      "demos.label":"ライブデモ","demos.title":"キャラクターにできることを見てみよう","demos.sub":"Oriven の実際の会話——すべてあなたのパソコン上で、プライベートに動作します。",
+      "demos.tab1":"⚔️ 壮大なロールプレイ","demos.tab2":"💕 ロマンス","demos.tab3":"👥 グループチャット",
+      "problem.label":"課題","problem.title":"監視し、検閲し、毎月課金してくる AI にうんざりしていませんか？","problem.quote":"関係をレンタルする必要なんてない。",
+      "features.label":"なぜ Oriven か","features.title":"設計から違う。",
+      "pricing.label":"料金","pricing.title":"シンプルな価格。サブスクなし。ずっと。","pricing.sub":"無料で始めて、一度だけアップグレード。ずっとあなたのもの。",
+      "pricing.free":"無料","pricing.freeNote":"ずっと無料","pricing.pro":"Pro","pricing.proNote":"買い切り · ローンチ価格","pricing.popular":"⭐ 一番人気","pricing.getFree":"無料ダウンロード","pricing.getPro":"Pro を入手 — $39 買い切り",
+      "faq.label":"よくある質問","faq.title":"よくある質問",
+      "final.titleA":"あなたの AI。あなたの物語。","final.titleB":"あなたのパソコン。","final.sub":"今日から無料で。会話は本来あるべき場所に——あなたの手元に。","final.download":"⬇ Oriven を無料ダウンロード","final.note":"無料版も完全に機能します · Pro へは一度きりのアップグレード、サブスクなし · データが端末から出ることはありません。",
+      "waitlist.placeholder":"ローンチ時に通知 — メールアドレス","waitlist.btn":"通知する","waitlist.note":"スパムなし。ローンチ時にメール1通だけ。それだけです。",
+    },
+    de: {
+      "nav.demos":"In Aktion sehen","nav.features":"Funktionen","nav.pricing":"Preise","nav.faq":"FAQ","nav.download":"Kostenlos laden","nav.pricingBtn":"Preise",
+      "hero.badge":"🔒 Deine Gespräche verlassen nie dein Gerät","hero.h1a":"KI-Charaktere","hero.h1b":"die auf deinem","hero.h1c":"Computer leben.",
+      "hero.sub":"Oriven ist ein privater KI-Chat- und Story-Begleiter — keine Cloud, kein Konto, keine monatliche Gebühr. Charaktere, die sich an dich erinnern, mit dir sprechen und mit dir wachsen.",
+      "hero.download":"⬇ Kostenlos laden","hero.see":"In Aktion sehen ↓",
+      "trust.offline":"Läuft offline","trust.account":"Kein Konto","trust.onetime":"Einmalkauf","trust.os":"Windows & macOS",
+      "demos.label":"Live-Demos","demos.title":"Sieh, was deine Charaktere können","demos.sub":"Echte Gespräche aus Oriven — komplett auf deinem Rechner, privat.",
+      "demos.tab1":"⚔️ Episches Rollenspiel","demos.tab2":"💕 Romanze","demos.tab3":"👥 Gruppenchat",
+      "problem.label":"Das Problem","problem.title":"Genug von KI, die dich überwacht, filtert und jeden Monat abkassiert?","problem.quote":"Du solltest keine Beziehung mieten müssen.",
+      "features.label":"Warum Oriven","features.title":"Anders – mit Absicht.",
+      "pricing.label":"Preise","pricing.title":"Einfacher Preis. Kein Abo. Niemals.","pricing.sub":"Kostenlos starten. Einmal upgraden. Für immer deins.",
+      "pricing.free":"Kostenlos","pricing.freeNote":"Für immer kostenlos","pricing.pro":"Pro","pricing.proNote":"Einmalzahlung · Startpreis","pricing.popular":"⭐ AM BELIEBTESTEN","pricing.getFree":"Kostenlos laden","pricing.getPro":"Pro holen — $39 einmalig",
+      "faq.label":"FAQ","faq.title":"Häufige Fragen",
+      "final.titleA":"Deine KI. Deine Geschichten.","final.titleB":"Dein Rechner.","final.sub":"Heute kostenlos starten. Lass deine Gespräche dort, wo sie hingehören — bei dir.","final.download":"⬇ Oriven laden — Kostenlos","final.note":"Die kostenlose Version ist voll funktionsfähig · Einmal auf Pro upgraden, kein Abo · Deine Daten verlassen nie dein Gerät.",
+      "waitlist.placeholder":"Zum Start benachrichtigen — deine E-Mail","waitlist.btn":"Benachrichtigen","waitlist.note":"Kein Spam. Eine E-Mail zum Start. Das war's.",
+    },
+    fr: {
+      "nav.demos":"Voir en action","nav.features":"Fonctions","nav.pricing":"Tarifs","nav.faq":"FAQ","nav.download":"Télécharger gratuit","nav.pricingBtn":"Tarifs",
+      "hero.badge":"🔒 Vos conversations ne quittent jamais votre appareil","hero.h1a":"Des personnages IA","hero.h1b":"qui vivent sur","hero.h1c":"votre ordinateur.",
+      "hero.sub":"Oriven est un compagnon privé de chat et d'histoires IA — sans cloud, sans compte, sans abonnement. Des personnages qui se souviennent de vous, vous parlent et grandissent avec vous.",
+      "hero.download":"⬇ Télécharger gratuit","hero.see":"Voir en action ↓",
+      "trust.offline":"Fonctionne hors ligne","trust.account":"Sans compte","trust.onetime":"Achat unique","trust.os":"Windows et macOS",
+      "demos.label":"Démos en direct","demos.title":"Découvrez ce que vos personnages peuvent faire","demos.sub":"De vraies conversations dans Oriven — entièrement sur votre machine, en privé.",
+      "demos.tab1":"⚔️ Jeu de rôle épique","demos.tab2":"💕 Romance","demos.tab3":"👥 Discussion de groupe",
+      "problem.label":"Le problème","problem.title":"Fatigué d'une IA qui vous surveille, vous filtre et vous facture chaque mois ?","problem.quote":"Vous ne devriez pas avoir à louer une relation.",
+      "features.label":"Pourquoi Oriven","features.title":"Différent par conception.",
+      "pricing.label":"Tarifs","pricing.title":"Prix simple. Aucun abonnement. Jamais.","pricing.sub":"Commencez gratuitement. Améliorez une fois. À vous pour toujours.",
+      "pricing.free":"Gratuit","pricing.freeNote":"Gratuit pour toujours","pricing.pro":"Pro","pricing.proNote":"Paiement unique · Prix de lancement","pricing.popular":"⭐ LE PLUS POPULAIRE","pricing.getFree":"Télécharger gratuit","pricing.getPro":"Obtenir Pro — $39 unique",
+      "faq.label":"FAQ","faq.title":"Questions fréquentes",
+      "final.titleA":"Votre IA. Vos histoires.","final.titleB":"Votre machine.","final.sub":"Commencez gratuitement aujourd'hui. Gardez vos conversations là où elles doivent être — avec vous.","final.download":"⬇ Télécharger Oriven — Gratuit","final.note":"La version gratuite est entièrement fonctionnelle · Passez à Pro une fois, sans abonnement · Vos données ne quittent jamais votre appareil.",
+      "waitlist.placeholder":"Me prévenir au lancement — votre e-mail","waitlist.btn":"Me prévenir","waitlist.note":"Pas de spam. Un e-mail au lancement. C'est tout.",
+    },
+    ko: {
+      "nav.demos":"직접 보기","nav.features":"기능","nav.pricing":"가격","nav.faq":"자주 묻는 질문","nav.download":"무료 다운로드","nav.pricingBtn":"가격",
+      "hero.badge":"🔒 대화는 절대 기기를 벗어나지 않습니다","hero.h1a":"AI 캐릭터가","hero.h1b":"당신의","hero.h1c":"컴퓨터에 산다.",
+      "hero.sub":"Oriven은 프라이빗 AI 채팅 & 스토리 동반자입니다. 클라우드 없음, 계정 없음, 월 요금 없음. 당신을 기억하고, 대화하고, 함께 성장하는 캐릭터.",
+      "hero.download":"⬇ 무료 다운로드","hero.see":"직접 보기 ↓",
+      "trust.offline":"오프라인 작동","trust.account":"계정 불필요","trust.onetime":"1회 구매","trust.os":"Windows 및 macOS",
+      "demos.label":"라이브 데모","demos.title":"당신의 캐릭터가 할 수 있는 것","demos.sub":"Oriven의 실제 대화 — 전부 당신의 컴퓨터에서, 비공개로 실행됩니다.",
+      "demos.tab1":"⚔️ 에픽 롤플레이","demos.tab2":"💕 로맨스","demos.tab3":"👥 그룹 채팅",
+      "problem.label":"문제","problem.title":"감시하고, 검열하고, 매달 요금을 청구하는 AI에 지치셨나요?","problem.quote":"관계를 빌려야 할 이유는 없습니다.",
+      "features.label":"왜 Oriven인가","features.title":"설계부터 다릅니다.",
+      "pricing.label":"가격","pricing.title":"간단한 가격. 구독 없음. 영원히.","pricing.sub":"무료로 시작. 한 번 업그레이드. 영원히 당신의 것.",
+      "pricing.free":"무료","pricing.freeNote":"영원히 무료","pricing.pro":"Pro","pricing.proNote":"1회 결제 · 출시 가격","pricing.popular":"⭐ 가장 인기","pricing.getFree":"무료 다운로드","pricing.getPro":"Pro 구매 — $39 1회",
+      "faq.label":"자주 묻는 질문","faq.title":"자주 묻는 질문",
+      "final.titleA":"당신의 AI. 당신의 이야기.","final.titleB":"당신의 컴퓨터.","final.sub":"오늘 무료로 시작하세요. 대화를 있어야 할 곳에 — 당신 곁에 두세요.","final.download":"⬇ Oriven 무료 다운로드","final.note":"무료 버전도 완전히 작동합니다 · Pro로 한 번만 업그레이드, 구독 없음 · 데이터는 기기를 벗어나지 않습니다.",
+      "waitlist.placeholder":"출시되면 알림 — 이메일 입력","waitlist.btn":"알림 받기","waitlist.note":"스팸 없음. 출시 때 메일 한 통. 그게 전부입니다.",
+    },
+    tr: {
+      "nav.demos":"Çalışırken gör","nav.features":"Özellikler","nav.pricing":"Fiyatlar","nav.faq":"SSS","nav.download":"Ücretsiz indir","nav.pricingBtn":"Fiyatlar",
+      "hero.badge":"🔒 Konuşmaların cihazından asla çıkmaz","hero.h1a":"Yapay zekâ karakterleri","hero.h1b":"senin","hero.h1c":"bilgisayarında yaşar.",
+      "hero.sub":"Oriven, kendi bilgisayarında çalışan özel bir yapay zekâ sohbet & hikâye arkadaşıdır — bulut yok, hesap yok, aylık ücret yok. Seni hatırlayan, seninle konuşan ve seninle gelişen karakterler.",
+      "hero.download":"⬇ Ücretsiz indir","hero.see":"Çalışırken gör ↓",
+      "trust.offline":"Çevrimdışı çalışır","trust.account":"Hesap gerekmez","trust.onetime":"Tek seferlik satın alma","trust.os":"Windows & macOS",
+      "demos.label":"Canlı demolar","demos.title":"Karakterlerinin neler yapabildiğini gör","demos.sub":"Oriven'den gerçek konuşmalar — tamamen kendi bilgisayarında, özel olarak çalışır.",
+      "demos.tab1":"⚔️ Epik Rol Yapma","demos.tab2":"💕 Romantizm","demos.tab3":"👥 Grup Sohbeti",
+      "problem.label":"Sorun","problem.title":"Seni izleyen, sansürleyen ve her ay fatura kesen yapay zekâdan bıktın mı?","problem.quote":"Bir ilişkiyi kiralamak zorunda değilsin.",
+      "features.label":"Neden Oriven","features.title":"Tasarımı gereği farklı.",
+      "pricing.label":"Fiyatlar","pricing.title":"Sade fiyat. Abonelik yok. Asla.","pricing.sub":"Ücretsiz başla. Bir kez yükselt. Ömür boyu senin.",
+      "pricing.free":"Ücretsiz","pricing.freeNote":"Sonsuza dek ücretsiz","pricing.pro":"Pro","pricing.proNote":"Tek seferlik · Lansman fiyatı","pricing.popular":"⭐ EN POPÜLER","pricing.getFree":"Ücretsiz indir","pricing.getPro":"Pro Al — $39 tek seferlik",
+      "faq.label":"SSS","faq.title":"Sık sorulan sorular",
+      "final.titleA":"Senin yapay zekân. Senin hikâyelerin.","final.titleB":"Senin bilgisayarın.","final.sub":"Bugün ücretsiz başla. Konuşmalarını ait oldukları yerde tut — yanında.","final.download":"⬇ Oriven'i İndir — Ücretsiz","final.note":"Ücretsiz sürüm tamamen işlevsel · Pro'ya bir kez geç, abonelik yok · Verilerin cihazından asla çıkmaz.",
+      "waitlist.placeholder":"Lansmanda haber ver — e-postan","waitlist.btn":"Haber ver","waitlist.note":"Spam yok. Lansmanda tek e-posta. Hepsi bu.",
+    },
+  };
+
+  // İngilizce temeli HTML'den otomatik yakala (kaynak metin = en)
+  (function(){
+    const en = {};
+    document.querySelectorAll('[data-i18n]').forEach(el => { en[el.getAttribute('data-i18n')] = el.textContent; });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => { en[el.getAttribute('data-i18n-ph')] = el.getAttribute('placeholder'); });
+    I18N.en = en;
+  })();
+
+  function applyLang(code) {
+    const dict = I18N[code] || I18N.en;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.getAttribute('data-i18n');
+      const v = (dict[k] != null) ? dict[k] : I18N.en[k];
+      if (v != null) el.textContent = v;
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const k = el.getAttribute('data-i18n-ph');
+      const v = (dict[k] != null) ? dict[k] : I18N.en[k];
+      if (v != null) el.setAttribute('placeholder', v);
+    });
+    document.documentElement.lang = code;
+    const cur = LANGS.find(l => l.code === code);
+    document.getElementById('langCurrent').textContent = cur ? cur.native : 'English';
+    document.querySelectorAll('.lang-opt').forEach(o => o.classList.toggle('active', o.dataset.code === code));
+    try { localStorage.setItem('oriven_lang', code); } catch(e) {}
+  }
+
+  // Menü oluştur
+  (function(){
+    const menu = document.getElementById('langMenu');
+    menu.innerHTML = LANGS.map(l =>
+      `<div class="lang-opt" data-code="${l.code}">${l.native}<span class="lang-native">${l.code.toUpperCase()}</span></div>`
+    ).join('');
+    const sw = document.getElementById('langSwitch');
+    document.getElementById('langBtn').addEventListener('click', e => { e.stopPropagation(); menu.classList.toggle('open'); });
+    menu.querySelectorAll('.lang-opt').forEach(o => o.addEventListener('click', () => {
+      applyLang(o.dataset.code); menu.classList.remove('open');
+    }));
+    document.addEventListener('click', () => menu.classList.remove('open'));
+
+    // Başlangıç dili: kayıtlı tercih → tarayıcı dili → İngilizce
+    let saved = null;
+    try { saved = localStorage.getItem('oriven_lang'); } catch(e) {}
+    const browser = (navigator.language || 'en').slice(0,2).toLowerCase();
+    const supported = LANGS.map(l => l.code);
+    const initial = saved && supported.includes(saved) ? saved
+                  : supported.includes(browser) ? browser : 'en';
+    applyLang(initial);
+  })();
 </script>
 </body>
 </html>
