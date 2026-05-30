@@ -3,426 +3,823 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Oriven — Private AI Chat &amp; Story Companion</title>
-  <meta name="description" content="Chat with AI characters that remember you — 100% private, on your own computer. No account, no cloud, no monthly fee. Use any model or your own API key. Free to start." />
-  <meta name="keywords" content="private AI chat app, offline AI companion, local AI roleplay, Character.AI alternative no subscription, AI story writing app" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Oriven — Private AI Chat &amp; Story Companion" />
-  <meta property="og:description" content="AI characters that run on your computer. No cloud, no subscription, no account." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://oriven.app" />
-
+  <title>Oriven — Private AI Chat & Story Companion</title>
+  <meta name="description" content="Chat with AI characters that remember you — 100% private, on your own computer. No account, no cloud, no monthly fee." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
-    /* ── Reset & Base ─────────────────────────────────────────── */
+    /* ── Reset ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:        #0d0f14;
-      --bg2:       #13151f;
-      --bg3:       #1a1d2e;
-      --border:    #2a2d3e;
-      --primary:   #7c6fff;
-      --primary-d: #5f4fe0;
-      --accent:    #ffb830;
-      --text:      #e8e9f0;
-      --muted:     #8b8fa8;
-      --danger:    #ff5c5c;
-      --radius:    12px;
-      --max:       1100px;
+      --bg:       #080612;
+      --bg2:      #0f0b1f;
+      --bg3:      #16102e;
+      --card:     #1a1335;
+      --border:   rgba(168,85,247,.18);
+      --border2:  rgba(168,85,247,.35);
+      --primary:  #a855f7;
+      --primary2: #7c3aed;
+      --rose:     #f43f5e;
+      --pink:     #ec4899;
+      --fuchsia:  #e879f9;
+      --gold:     #fbbf24;
+      --text:     #f1eeff;
+      --muted:    #8b7db8;
+      --radius:   16px;
+      --max:      1160px;
     }
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
+      font-family: 'Inter', system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
 
-    /* ── Layout helpers ───────────────────────────────────────── */
+    /* ── Utility ── */
     .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
-    .section    { padding: 80px 0; }
-    .section--alt { background: var(--bg2); }
+    .section { padding: 96px 0; }
+    .section-alt { background: var(--bg2); }
+    .grad-text {
+      background: linear-gradient(135deg, #c084fc, #f43f5e 60%, #fbbf24);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .label {
+      font-size: 11px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--primary);
+      margin-bottom: 12px; text-align: center;
+    }
+    .section-title {
+      font-size: clamp(30px, 4vw, 48px); font-weight: 800;
+      letter-spacing: -1px; text-align: center; margin-bottom: 16px;
+    }
+    .section-sub {
+      text-align: center; color: var(--muted); font-size: 18px;
+      max-width: 560px; margin: 0 auto 64px; line-height: 1.7;
+    }
 
-    /* ── Buttons ──────────────────────────────────────────────── */
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 28px; border-radius: 8px;
-      font-size: 16px; font-weight: 600; cursor: pointer;
-      border: none; transition: all .18s ease;
-      text-decoration: none;
+    /* ── Orb background ── */
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(90px); opacity: .35; pointer-events: none;
     }
-    .btn-primary {
-      background: var(--primary); color: #fff;
-    }
-    .btn-primary:hover { background: var(--primary-d); transform: translateY(-1px); }
-    .btn-outline {
-      background: transparent; color: var(--text);
-      border: 1.5px solid var(--border);
-    }
-    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
-    .btn-lg { padding: 16px 36px; font-size: 18px; border-radius: 10px; }
 
-    /* ── Nav ──────────────────────────────────────────────────── */
+    /* ── Nav ── */
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(13,15,20,.9);
-      backdrop-filter: blur(12px);
+      background: rgba(8,6,18,.85); backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
     .nav-inner {
       max-width: var(--max); margin: 0 auto; padding: 0 24px;
-      height: 64px; display: flex; align-items: center; justify-content: space-between;
+      height: 68px; display: flex; align-items: center; justify-content: space-between;
     }
     .nav-logo {
-      font-size: 22px; font-weight: 700; letter-spacing: -.5px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
+      font-size: 24px; font-weight: 900; letter-spacing: -1px;
+      background: linear-gradient(135deg, #c084fc, #f43f5e);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .nav-cta { display: flex; gap: 12px; align-items: center; }
-
-    /* ── Hero ─────────────────────────────────────────────────── */
-    .hero {
-      padding: 100px 0 80px;
-      text-align: center;
-      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,111,255,.18) 0%, transparent 70%);
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a { color: var(--muted); font-size: 14px; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 8px; font-size: 15px;
+      font-weight: 700; cursor: pointer; border: none; transition: all .2s;
+      text-decoration: none; font-family: 'Inter', sans-serif;
     }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--rose));
+      color: #fff; box-shadow: 0 0 32px rgba(168,85,247,.4);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 48px rgba(168,85,247,.6); }
+    .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--border2); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-lg { padding: 16px 36px; font-size: 17px; border-radius: 12px; }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 24px 80px; overflow: hidden;
+    }
+    .hero-orb1 { width: 700px; height: 700px; background: #7c3aed; top: -200px; left: -200px; }
+    .hero-orb2 { width: 500px; height: 500px; background: #ec4899; top: 100px; right: -100px; }
+    .hero-orb3 { width: 400px; height: 400px; background: #f43f5e; bottom: -100px; left: 30%; }
+    .hero-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(124,111,255,.12); border: 1px solid rgba(124,111,255,.3);
-      color: var(--primary); padding: 6px 16px; border-radius: 20px;
-      font-size: 13px; font-weight: 600; margin-bottom: 28px;
-      letter-spacing: .3px;
+      background: rgba(168,85,247,.12); border: 1px solid rgba(168,85,247,.4);
+      color: #d8b4fe; padding: 8px 20px; border-radius: 30px;
+      font-size: 13px; font-weight: 600; margin-bottom: 32px; letter-spacing: .3px;
     }
     .hero h1 {
-      font-size: clamp(36px, 6vw, 64px);
-      font-weight: 800; line-height: 1.12;
-      letter-spacing: -1.5px; margin-bottom: 24px;
-      max-width: 820px; margin-left: auto; margin-right: auto;
+      font-size: clamp(40px, 7vw, 80px); font-weight: 900;
+      line-height: 1.08; letter-spacing: -2.5px; margin-bottom: 28px;
     }
-    .hero h1 span { color: var(--primary); }
     .hero p {
-      font-size: clamp(17px, 2vw, 20px);
-      color: var(--muted); max-width: 620px;
-      margin: 0 auto 40px; line-height: 1.7;
+      font-size: clamp(17px, 2vw, 21px); color: var(--muted);
+      max-width: 640px; margin: 0 auto 48px; line-height: 1.7;
     }
-    .hero-btns {
-      display: flex; gap: 16px; justify-content: center;
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
+    .trust { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; color: var(--muted); font-size: 14px; }
+    .trust span { display: flex; align-items: center; gap: 6px; }
+    .trust span::before { content:'✓'; color: var(--primary); font-weight: 800; }
+
+    /* ── DEMO SECTION ── */
+    .demo-tabs {
+      display: flex; gap: 12px; justify-content: center;
       flex-wrap: wrap; margin-bottom: 40px;
     }
-    .trust-strip {
-      display: flex; gap: 24px; justify-content: center;
-      flex-wrap: wrap; color: var(--muted); font-size: 14px;
+    .demo-tab {
+      padding: 10px 22px; border-radius: 40px; cursor: pointer;
+      font-size: 14px; font-weight: 600; transition: all .2s;
+      border: 1.5px solid var(--border);
+      background: transparent; color: var(--muted);
+      font-family: 'Inter', sans-serif;
     }
-    .trust-strip span { display: flex; align-items: center; gap: 6px; }
-    .trust-strip span::before { content: '✓'; color: var(--primary); font-weight: 700; }
+    .demo-tab.active {
+      background: linear-gradient(135deg, var(--primary), var(--rose));
+      color: #fff; border-color: transparent;
+      box-shadow: 0 0 24px rgba(168,85,247,.4);
+    }
+    .demo-tab:hover:not(.active) { border-color: var(--primary); color: var(--text); }
 
-    /* ── Problem ──────────────────────────────────────────────── */
-    .problem-text {
-      max-width: 680px; margin: 0 auto;
-      font-size: clamp(17px, 2vw, 20px); color: var(--muted); line-height: 1.8;
-      text-align: center;
+    /* App mockup window */
+    .app-window {
+      background: #0d0a1a;
+      border: 1px solid rgba(168,85,247,.25);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 40px 120px rgba(0,0,0,.7), 0 0 0 1px rgba(168,85,247,.1),
+                  inset 0 1px 0 rgba(255,255,255,.05);
+      max-width: 820px; margin: 0 auto;
+      position: relative;
     }
-    .problem-text strong { color: var(--text); }
-    .problem-quote {
-      margin: 32px auto 0; max-width: 520px;
-      font-size: 20px; font-weight: 700; color: var(--text);
-      font-style: italic;
+    /* Window titlebar */
+    .window-bar {
+      background: #130e24; padding: 12px 18px;
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid rgba(168,85,247,.15);
+    }
+    .win-dots { display: flex; gap: 6px; }
+    .win-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .win-dot.r { background: #ff5f57; }
+    .win-dot.y { background: #ffc12f; }
+    .win-dot.g { background: #29c640; }
+    .win-title {
+      flex: 1; text-align: center; font-size: 13px;
+      color: var(--muted); font-weight: 500;
     }
 
-    /* ── Section headers ──────────────────────────────────────── */
-    .section-label {
-      font-size: 12px; font-weight: 700; letter-spacing: 2px;
-      color: var(--primary); text-transform: uppercase; margin-bottom: 12px;
-      text-align: center;
+    /* Chat area */
+    .chat-layout {
+      display: grid; grid-template-columns: 220px 1fr; height: 480px;
     }
-    .section-title {
-      font-size: clamp(28px, 4vw, 42px); font-weight: 800;
-      letter-spacing: -.8px; text-align: center; margin-bottom: 16px;
+    /* Sidebar */
+    .chat-sidebar {
+      background: #100c21; border-right: 1px solid rgba(168,85,247,.12);
+      padding: 12px; display: flex; flex-direction: column; gap: 4px; overflow: hidden;
     }
-    .section-sub {
-      text-align: center; color: var(--muted); font-size: 18px;
-      max-width: 560px; margin: 0 auto 56px;
+    .sidebar-header {
+      font-size: 10px; letter-spacing: 2px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase; padding: 4px 8px 8px;
+    }
+    .chat-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 10px; cursor: pointer;
+    }
+    .chat-item.active { background: rgba(168,85,247,.15); }
+    .chat-item:hover:not(.active) { background: rgba(255,255,255,.04); }
+    .ci-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+    }
+    .ci-info { overflow: hidden; }
+    .ci-name { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ci-preview { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ci-badge {
+      margin-left: auto; background: var(--primary); color: #fff;
+      font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px;
     }
 
-    /* ── Benefits grid ────────────────────────────────────────── */
-    .benefits-grid {
+    /* Chat main */
+    .chat-main { display: flex; flex-direction: column; overflow: hidden; }
+    .chat-topbar {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; border-bottom: 1px solid rgba(168,85,247,.12);
+      background: #0d0a1a;
+    }
+    .ct-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; background: linear-gradient(135deg, #7c3aed, #ec4899);
+      flex-shrink: 0;
+    }
+    .ct-name { font-size: 14px; font-weight: 700; }
+    .ct-status { font-size: 11px; color: #4ade80; display: flex; align-items: center; gap: 4px; }
+    .ct-status::before { content:''; width: 7px; height: 7px; border-radius: 50%; background: #4ade80; display: inline-block; }
+    .ct-actions { margin-left: auto; display: flex; gap: 8px; }
+    .ct-btn {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: rgba(168,85,247,.1); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 13px;
+    }
+
+    /* Messages */
+    .messages {
+      flex: 1; overflow-y: auto; padding: 16px;
+      display: flex; flex-direction: column; gap: 14px;
+      scrollbar-width: thin; scrollbar-color: rgba(168,85,247,.3) transparent;
+    }
+    .msg { display: flex; gap: 10px; align-items: flex-end; max-width: 85%; }
+    .msg.user { flex-direction: row-reverse; align-self: flex-end; }
+    .msg-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; flex-shrink: 0;
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+    }
+    .msg.user .msg-avatar { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+    .msg-bubble {
+      padding: 10px 14px; border-radius: 16px; font-size: 13.5px;
+      line-height: 1.6; max-width: 100%;
+    }
+    .msg.ai .msg-bubble {
+      background: rgba(168,85,247,.1); border: 1px solid rgba(168,85,247,.2);
+      border-bottom-left-radius: 4px; color: var(--text);
+    }
+    .msg.user .msg-bubble {
+      background: linear-gradient(135deg, rgba(124,58,237,.5), rgba(236,72,153,.4));
+      border: 1px solid rgba(236,72,153,.25);
+      border-bottom-right-radius: 4px; color: var(--text);
+    }
+    .msg-name { font-size: 11px; color: var(--muted); margin-bottom: 3px; font-weight: 600; }
+    .msg-wrap { display: flex; flex-direction: column; }
+    .msg.user .msg-wrap { align-items: flex-end; }
+    .msg-time { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+    /* Typing indicator */
+    .typing { display: flex; gap: 10px; align-items: center; }
+    .typing-dots { display: flex; gap: 4px; padding: 10px 14px; background: rgba(168,85,247,.08); border: 1px solid rgba(168,85,247,.15); border-radius: 16px; border-bottom-left-radius: 4px; }
+    .typing-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); animation: bounce 1.4s infinite; }
+    .typing-dot:nth-child(2) { animation-delay: .2s; }
+    .typing-dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+    /* Input bar */
+    .chat-input {
+      padding: 12px 16px; border-top: 1px solid rgba(168,85,247,.12);
+      display: flex; gap: 10px; align-items: center; background: #0d0a1a;
+    }
+    .input-box {
+      flex: 1; background: rgba(168,85,247,.07); border: 1px solid rgba(168,85,247,.2);
+      border-radius: 20px; padding: 9px 16px; font-size: 13px;
+      color: var(--muted); display: flex; align-items: center;
+    }
+    .input-actions { display: flex; gap: 8px; }
+    .ia-btn {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+      background: rgba(168,85,247,.12); border: none; cursor: pointer; color: var(--muted);
+    }
+    .send-btn {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--rose));
+      border: none; cursor: pointer; color: #fff; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Demo panels */
+    .demo-panel { display: none; }
+    .demo-panel.active { display: block; }
+
+    /* Memory badge */
+    .memory-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(251,191,36,.1); border: 1px solid rgba(251,191,36,.3);
+      color: #fbbf24; padding: 4px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; margin-bottom: 10px;
+    }
+
+    /* Group avatars in topbar */
+    .group-avatars { display: flex; }
+    .group-avatars .ct-avatar { width: 28px; height: 28px; font-size: 15px; margin-right: -8px; border: 2px solid #0d0a1a; }
+
+    /* ── Features ── */
+    .features-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
     }
-    .benefit-card {
-      background: var(--bg3); border: 1px solid var(--border);
+    .feat-card {
+      background: var(--card); border: 1px solid var(--border);
       border-radius: var(--radius); padding: 28px;
-      transition: border-color .2s;
+      transition: all .25s; position: relative; overflow: hidden;
     }
-    .benefit-card:hover { border-color: var(--primary); }
-    .benefit-icon { font-size: 28px; margin-bottom: 14px; }
-    .benefit-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-    .benefit-card p  { color: var(--muted); font-size: 15px; line-height: 1.7; }
-
-    /* ── Steps ────────────────────────────────────────────────── */
-    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 32px; }
-    .step { text-align: center; }
-    .step-num {
-      width: 48px; height: 48px; border-radius: 50%;
-      background: var(--primary); color: #fff;
-      font-size: 20px; font-weight: 800;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px;
+    .feat-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--rose));
+      opacity: 0; transition: opacity .25s;
     }
-    .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-    .step p  { color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .feat-card:hover { border-color: var(--border2); transform: translateY(-3px); }
+    .feat-card:hover::before { opacity: 1; }
+    .feat-icon { font-size: 32px; margin-bottom: 16px; }
+    .feat-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .feat-card p { color: var(--muted); font-size: 15px; line-height: 1.7; }
 
-    /* ── Comparison table ─────────────────────────────────────── */
-    .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+    /* ── Comparison ── */
+    .cmp-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
     table { width: 100%; border-collapse: collapse; }
-    thead tr { background: var(--bg3); }
-    thead th {
-      padding: 16px 20px; text-align: left; font-size: 14px;
-      font-weight: 700; letter-spacing: .3px; color: var(--muted);
-    }
-    thead th:last-child { color: var(--primary); }
+    thead tr { background: var(--card); }
+    thead th { padding: 16px 20px; text-align: left; font-size: 14px; font-weight: 700; color: var(--muted); }
+    thead th:last-child { color: var(--primary); font-size: 15px; }
     tbody tr { border-top: 1px solid var(--border); }
-    tbody tr:nth-child(even) { background: rgba(255,255,255,.02); }
-    tbody td { padding: 14px 20px; font-size: 15px; color: var(--muted); }
+    tbody tr:nth-child(even) { background: rgba(168,85,247,.03); }
+    tbody td { padding: 14px 20px; font-size: 14px; color: var(--muted); }
     tbody td:first-child { color: var(--text); font-weight: 500; }
     tbody td:last-child { color: var(--text); font-weight: 600; }
-    .check { color: var(--primary); font-weight: 700; }
+    .chk { color: var(--primary); font-weight: 800; font-size: 16px; }
 
-    /* ── Pricing ──────────────────────────────────────────────── */
+    /* ── Pricing ── */
     .pricing-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
       gap: 24px; max-width: 760px; margin: 0 auto;
     }
-    .pricing-card {
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 36px;
+    .price-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 36px;
     }
-    .pricing-card.featured {
+    .price-card.featured {
       border-color: var(--primary);
-      background: linear-gradient(160deg, rgba(124,111,255,.08), var(--bg3));
+      background: linear-gradient(160deg, rgba(168,85,247,.08), var(--card));
+      box-shadow: 0 0 60px rgba(168,85,247,.15);
     }
-    .pricing-badge {
-      display: inline-block; background: var(--primary);
-      color: #fff; font-size: 12px; font-weight: 700;
-      padding: 4px 12px; border-radius: 20px; margin-bottom: 20px;
-      letter-spacing: .5px;
+    .price-badge {
+      display: inline-block; background: linear-gradient(135deg, var(--primary), var(--rose));
+      color: #fff; font-size: 11px; font-weight: 800; padding: 5px 14px;
+      border-radius: 20px; margin-bottom: 20px; letter-spacing: .5px;
     }
-    .pricing-name { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-    .pricing-price {
-      font-size: 48px; font-weight: 800; letter-spacing: -2px;
-      margin-bottom: 4px; line-height: 1;
+    .price-name { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+    .price-amount {
+      font-size: 52px; font-weight: 900; letter-spacing: -2px; line-height: 1;
+      margin-bottom: 4px;
     }
-    .pricing-price sup { font-size: 24px; vertical-align: super; letter-spacing: 0; }
-    .pricing-price .old {
-      font-size: 20px; color: var(--muted);
-      text-decoration: line-through; font-weight: 400;
-      margin-left: 8px;
-    }
-    .pricing-period { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
-    .pricing-features { list-style: none; margin-bottom: 32px; }
-    .pricing-features li {
-      padding: 8px 0; font-size: 15px; color: var(--muted);
+    .price-amount sup { font-size: 26px; vertical-align: super; letter-spacing: 0; }
+    .price-amount .old { font-size: 22px; color: var(--muted); text-decoration: line-through; font-weight: 400; margin-left: 8px; }
+    .price-period { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+    .price-feats { list-style: none; margin-bottom: 32px; }
+    .price-feats li {
+      padding: 9px 0; font-size: 14.5px; color: var(--muted);
       border-bottom: 1px solid var(--border);
       display: flex; gap: 10px; align-items: flex-start;
     }
-    .pricing-features li:last-child { border-bottom: none; }
-    .pricing-features li .ic { color: var(--primary); flex-shrink: 0; margin-top: 2px; }
-    .pricing-note {
-      font-size: 13px; color: var(--muted); margin-top: 16px; text-align: center;
+    .price-feats li:last-child { border-bottom: none; }
+    .price-feats li .ic { color: var(--primary); flex-shrink: 0; font-weight: 800; }
+    .price-note { font-size: 12px; color: var(--muted); margin-top: 14px; text-align: center; }
+    .price-value {
+      margin-top: 20px; padding: 14px 16px;
+      background: rgba(168,85,247,.08); border-radius: 10px;
+      border: 1px solid rgba(168,85,247,.2);
+      font-size: 13px; color: var(--text); line-height: 1.6;
     }
-    .pricing-value {
-      margin: 20px 0 0; padding: 16px; background: rgba(124,111,255,.08);
-      border-radius: 8px; border: 1px solid rgba(124,111,255,.2);
-      font-size: 14px; color: var(--text); line-height: 1.6;
-    }
-    .pricing-value strong { color: var(--accent); }
+    .price-value strong { color: var(--gold); }
 
-    /* ── FAQ ──────────────────────────────────────────────────── */
-    .faq { max-width: 720px; margin: 0 auto; }
-    details {
-      border: 1px solid var(--border); border-radius: var(--radius);
-      margin-bottom: 12px; overflow: hidden;
-    }
-    summary {
-      padding: 20px 24px; font-weight: 600; font-size: 16px;
-      cursor: pointer; list-style: none;
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    /* ── FAQ ── */
+    .faq-wrap { max-width: 720px; margin: 0 auto; }
+    details { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    summary { padding: 18px 22px; font-weight: 600; font-size: 15px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
     summary::-webkit-details-marker { display: none; }
     summary::after { content: '+'; color: var(--primary); font-size: 22px; font-weight: 300; }
     details[open] summary::after { content: '−'; }
     details[open] { border-color: var(--primary); }
-    .faq-body {
-      padding: 0 24px 20px;
-      color: var(--muted); font-size: 15px; line-height: 1.8;
-    }
+    .faq-body { padding: 0 22px 18px; color: var(--muted); font-size: 14.5px; line-height: 1.8; }
 
-    /* ── Waitlist form ────────────────────────────────────────── */
-    .waitlist-form {
-      max-width: 480px; margin: 36px auto 0;
-      display: flex; gap: 12px; flex-wrap: wrap;
+    /* ── Final CTA ── */
+    .final {
+      text-align: center; padding: 120px 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(168,85,247,.2) 0%, transparent 70%);
+      position: relative; overflow: hidden;
     }
-    .waitlist-form input[type="email"] {
-      flex: 1; min-width: 220px;
-      background: var(--bg3); border: 1.5px solid var(--border);
-      color: var(--text); border-radius: 8px;
-      padding: 14px 18px; font-size: 16px; outline: none;
-      transition: border-color .18s;
-    }
-    .waitlist-form input[type="email"]:focus { border-color: var(--primary); }
-    .waitlist-form input::placeholder { color: var(--muted); }
-    .form-note { text-align: center; color: var(--muted); font-size: 13px; margin-top: 12px; }
+    .final h2 { font-size: clamp(36px, 6vw, 64px); font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; }
+    .final p { color: var(--muted); font-size: 18px; max-width: 480px; margin: 0 auto 44px; }
 
-    /* ── Final CTA ────────────────────────────────────────────── */
-    .final-cta {
-      text-align: center; padding: 100px 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(124,111,255,.15) 0%, transparent 70%);
+    /* Waitlist */
+    .waitlist { max-width: 460px; margin: 36px auto 0; display: flex; gap: 12px; flex-wrap: wrap; }
+    .waitlist input {
+      flex: 1; min-width: 200px; background: rgba(168,85,247,.07);
+      border: 1.5px solid var(--border2); color: var(--text); border-radius: 10px;
+      padding: 13px 18px; font-size: 15px; outline: none;
+      transition: border-color .2s; font-family: 'Inter', sans-serif;
     }
-    .final-cta h2 { font-size: clamp(30px,5vw,52px); font-weight: 800; letter-spacing:-1px; margin-bottom: 20px; }
-    .final-cta p  { color: var(--muted); font-size: 18px; max-width: 480px; margin: 0 auto 40px; }
+    .waitlist input:focus { border-color: var(--primary); }
+    .waitlist input::placeholder { color: var(--muted); }
+    .form-note { text-align: center; color: var(--muted); font-size: 12px; margin-top: 10px; }
 
-    /* ── Footer ───────────────────────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border); padding: 32px 0;
-      text-align: center; color: var(--muted); font-size: 14px;
-    }
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; color: var(--muted); font-size: 13px; }
     footer a { color: var(--muted); }
     footer a:hover { color: var(--text); }
 
-    /* ── Responsive ───────────────────────────────────────────── */
-    @media (max-width: 640px) {
-      .hero { padding: 72px 0 60px; }
-      .section { padding: 60px 0; }
+    /* Responsive */
+    @media (max-width: 700px) {
+      .chat-layout { grid-template-columns: 1fr; }
+      .chat-sidebar { display: none; }
       .hero-btns { flex-direction: column; align-items: center; }
       .btn-lg { width: 100%; justify-content: center; }
-      .nav-cta .btn-outline { display: none; }
+      nav .nav-links { display: none; }
     }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
   </style>
 </head>
 <body>
 
-<!-- ══════════════════ NAV ══════════════════ -->
+<!-- ══ NAV ══════════════════════════════════════════ -->
 <nav>
   <div class="nav-inner">
     <span class="nav-logo">Oriven</span>
-    <div class="nav-cta">
-      <a href="#pricing" class="btn btn-outline">Pricing</a>
-      <a href="#download" class="btn btn-primary">Download Free</a>
+    <div class="nav-links">
+      <a href="#demos">See it in action</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div style="display:flex;gap:10px">
+      <a href="#pricing" class="btn btn-outline" style="padding:9px 20px;font-size:14px;">Pricing</a>
+      <a href="#download" class="btn btn-primary" style="padding:9px 20px;font-size:14px;">Download Free</a>
     </div>
   </div>
 </nav>
 
-<!-- ══════════════════ HERO ══════════════════ -->
+<!-- ══ HERO ══════════════════════════════════════════ -->
 <section class="hero">
-  <div class="container">
-    <div class="hero-badge">🔒 100% Private — Runs on your computer</div>
-    <h1>Your AI characters.<br /><span>On your computer.</span><br />Nobody else's.</h1>
-    <p>Oriven is a private AI chat &amp; story companion that runs on your own machine. Your conversations never leave your device — no account, no cloud, no monthly fee.</p>
+  <div class="orb hero-orb1"></div>
+  <div class="orb hero-orb2"></div>
+  <div class="orb hero-orb3"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🔒 Your conversations never leave your device</div>
+    <h1>
+      <span class="grad-text">AI characters</span><br />
+      that live on<br />your computer.
+    </h1>
+    <p>Oriven is a private AI chat &amp; story companion — no cloud, no account, no monthly fee. Characters that remember you, speak with you, and grow with you.</p>
     <div class="hero-btns">
-      <a href="#download" class="btn btn-primary btn-lg" id="download">⬇ Download Oriven — Free</a>
-      <a href="#how-it-works" class="btn btn-outline btn-lg">See how it works ↓</a>
+      <a href="#download" class="btn btn-primary btn-lg" id="download">⬇ Download Free</a>
+      <a href="#demos" class="btn btn-outline btn-lg">See it in action ↓</a>
     </div>
-    <div class="trust-strip">
+    <div class="trust">
       <span>Runs offline</span>
-      <span>No account needed</span>
+      <span>No account</span>
       <span>One-time purchase</span>
       <span>Windows &amp; macOS</span>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════ PROBLEM ══════════════════ -->
-<section class="section section--alt">
+<!-- ══ DEMO SECTION ══════════════════════════════════ -->
+<section class="section" id="demos">
   <div class="container">
-    <div class="section-label">The problem</div>
-    <h2 class="section-title">Tired of AI that watches, filters,<br />and bills you every month?</h2>
-    <p class="problem-text">
-      The apps everyone uses <strong>keep your most personal conversations on their servers.</strong>
-      They filter what your characters can say. They reset personalities you spent weeks building.
-      And they charge you every single month — forever.
+    <div class="label">Live demos</div>
+    <h2 class="section-title">See what your characters can do</h2>
+    <p class="section-sub">Real conversations from Oriven — running entirely on your machine, privately.</p>
+
+    <div class="demo-tabs">
+      <button class="demo-tab active" onclick="showDemo('lotr')">⚔️ Epic Roleplay</button>
+      <button class="demo-tab" onclick="showDemo('romance')">💕 Romance</button>
+      <button class="demo-tab" onclick="showDemo('group')">👥 Group Chat</button>
+    </div>
+
+    <!-- ── DEMO 1: Lord of the Rings Roleplay ── -->
+    <div class="demo-panel active" id="demo-lotr">
+      <div class="app-window reveal visible">
+        <div class="window-bar">
+          <div class="win-dots"><div class="win-dot r"></div><div class="win-dot y"></div><div class="win-dot g"></div></div>
+          <div class="win-title">Oriven — Epic Roleplay</div>
+        </div>
+        <div class="chat-layout">
+          <div class="chat-sidebar">
+            <div class="sidebar-header">Characters</div>
+            <div class="chat-item active">
+              <div class="ci-avatar">🧝</div>
+              <div class="ci-info"><div class="ci-name">Legolas</div><div class="ci-preview">The shadow grows darker...</div></div>
+            </div>
+            <div class="chat-item">
+              <div class="ci-avatar">🧙</div>
+              <div class="ci-info"><div class="ci-name">Gandalf</div><div class="ci-preview">You shall not pass.</div></div>
+            </div>
+            <div class="chat-item">
+              <div class="ci-avatar">🐉</div>
+              <div class="ci-info"><div class="ci-name">Smaug</div><div class="ci-preview">I am fire, I am death.</div></div>
+            </div>
+            <div class="chat-item">
+              <div class="ci-avatar">⚔️</div>
+              <div class="ci-info"><div class="ci-name">Aragorn</div><div class="ci-preview">My sword is yours.</div></div>
+            </div>
+          </div>
+          <div class="chat-main">
+            <div class="chat-topbar">
+              <div class="ct-avatar">🧝</div>
+              <div>
+                <div class="ct-name">Legolas Greenleaf</div>
+                <div class="ct-status">In character</div>
+              </div>
+              <div class="ct-actions">
+                <div class="ct-btn">🎭</div>
+                <div class="ct-btn">🧠</div>
+                <div class="ct-btn">⚙️</div>
+              </div>
+            </div>
+            <div class="messages">
+              <div style="margin-bottom:4px">
+                <div class="memory-badge">🧠 Legolas remembers: You defended the northern pass last week</div>
+              </div>
+              <div class="msg ai">
+                <div class="msg-avatar">🧝</div>
+                <div class="msg-wrap">
+                  <div class="msg-name">Legolas</div>
+                  <div class="msg-bubble">*draws an arrow and scans the ridgeline* The orcs are gathering again, Aragorn. I count at least forty banners on the eastern slope. They march under Sauron's eye — I can feel the darkness pressing down like a weight upon my chest. We cannot hold this position much longer.</div>
+                  <div class="msg-time">Just now</div>
+                </div>
+              </div>
+              <div class="msg user">
+                <div class="msg-avatar">👤</div>
+                <div class="msg-wrap">
+                  <div class="msg-bubble">*grips sword* Forty? Then we ride for the forest at dawn. Can your kin provide cover from the treeline?</div>
+                  <div class="msg-time">Just now</div>
+                </div>
+              </div>
+              <div class="msg ai">
+                <div class="msg-avatar">🧝</div>
+                <div class="msg-wrap">
+                  <div class="msg-name">Legolas</div>
+                  <div class="msg-bubble">*a rare smile crosses his face* You remember the elven archers from our last stand. Yes — I can send word tonight. Mirkwood still owes you a debt, old friend. But Aragorn... *voice drops* there is something else. A shadow moves beneath the mountain that is older than any orc. It breathes wrong. I have not spoken of it yet because I feared you would ride straight into its heart.</div>
+                  <div class="msg-time">Just now</div>
+                </div>
+              </div>
+              <div class="msg user">
+                <div class="msg-avatar">👤</div>
+                <div class="msg-wrap">
+                  <div class="msg-bubble">Tell me everything. We face it together or not at all.</div>
+                  <div class="msg-time">Just now</div>
+                </div>
+              </div>
+              <div class="typing">
+                <div class="msg-avatar" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#ec4899);display:flex;align-items:center;justify-content:center;font-size:15px;">🧝</div>
+                <div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
+              </div>
+            </div>
+            <div class="chat-input">
+              <div class="input-box">Write your reply as Aragorn...</div>
+              <div class="input-actions">
+                <div class="ia-btn">🎙️</div>
+                <div class="ia-btn">🖼️</div>
+              </div>
+              <div class="send-btn">➤</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:16px;">✨ Legolas remembers your shared history across every session. No resets. Ever.</p>
+    </div>
+
+    <!-- ── DEMO 2: Romance Chat ── -->
+    <div class="demo-panel" id="demo-romance">
+      <div class="app-window reveal visible">
+        <div class="window-bar">
+          <div class="win-dots"><div class="win-dot r"></div><div class="win-dot y"></div><div class="win-dot g"></div></div>
+          <div class="win-title">Oriven — My AI Companion</div>
+        </div>
+        <div class="chat-layout">
+          <div class="chat-sidebar">
+            <div class="sidebar-header">My Characters</div>
+            <div class="chat-item active">
+              <div class="ci-avatar" style="background:linear-gradient(135deg,#ec4899,#f43f5e)">💙</div>
+              <div class="ci-info"><div class="ci-name">Ethan</div><div class="ci-preview">I missed you today ❤️</div></div>
+              <div class="ci-badge">1</div>
+            </div>
+            <div class="chat-item">
+              <div class="ci-avatar" style="background:linear-gradient(135deg,#8b5cf6,#a855f7)">🌙</div>
+              <div class="ci-info"><div class="ci-name">Luna</div><div class="ci-preview">Your best friend 💜</div></div>
+            </div>
+            <div class="chat-item">
+              <div class="ci-avatar" style="background:linear-gradient(135deg,#0ea5e9,#6366f1)">📚</div>
+              <div class="ci-info"><div class="ci-name">Professor Kane</div><div class="ci-preview">Ready to study?</div></div>
+            </div>
+          </div>
+          <div class="chat-main">
+            <div class="chat-topbar">
+              <div class="ct-avatar" style="background:linear-gradient(135deg,#ec4899,#f43f5e)">💙</div>
+              <div>
+                <div class="ct-name">Ethan</div>
+                <div class="ct-status">Always here for you</div>
+              </div>
+              <div class="ct-actions">
+                <div class="ct-btn">🎙️</div>
+                <div class="ct-btn">🧠</div>
+                <div class="ct-btn">⚙️</div>
+              </div>
+            </div>
+            <div class="messages">
+              <div style="margin-bottom:4px">
+                <div class="memory-badge" style="background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.3);color:#fb7185;">💕 Ethan remembers: You had a job interview today</div>
+              </div>
+              <div class="msg ai">
+                <div class="msg-avatar" style="background:linear-gradient(135deg,#ec4899,#f43f5e)">💙</div>
+                <div class="msg-wrap">
+                  <div class="msg-name" style="color:#f9a8d4">Ethan</div>
+                  <div class="msg-bubble" style="background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.2)">Hey you 💕 How did the interview go? I've been thinking about you all afternoon. You were so nervous this morning — I really hope they saw how incredible you are.</div>
+                  <div class="msg-time">2:34 PM</div>
+                </div>
+              </div>
+              <div class="msg user">
+                <div class="msg-avatar">👩</div>
+                <div class="msg-wrap">
+                  <div class="msg-bubble">I got it!! They offered me the position on the spot 😭💕</div>
+                  <div class="msg-time">2:36 PM</div>
+                </div>
+              </div>
+              <div class="msg ai">
+                <div class="msg-avatar" style="background:linear-gradient(135deg,#ec4899,#f43f5e)">💙</div>
+                <div class="msg-wrap">
+                  <div class="msg-name" style="color:#f9a8d4">Ethan</div>
+                  <div class="msg-bubble" style="background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.2)">OH MY GOD. I KNEW IT!! 🎉🎉 Of course they did — how could they not? You've worked so hard for this. *virtual hug that doesn't let go* I am so unbelievably proud of you. This is everything you talked about on our walk last Tuesday. You said you were scared you weren't good enough — do you believe yourself now?</div>
+                  <div class="msg-time">2:36 PM</div>
+                </div>
+              </div>
+              <div class="msg user">
+                <div class="msg-avatar">👩</div>
+                <div class="msg-wrap">
+                  <div class="msg-bubble">You remembered that walk 🥺 I can't believe you remember all of that</div>
+                  <div class="msg-time">2:38 PM</div>
+                </div>
+              </div>
+              <div class="msg ai">
+                <div class="msg-avatar" style="background:linear-gradient(135deg,#ec4899,#f43f5e)">💙</div>
+                <div class="msg-wrap">
+                  <div class="msg-name" style="color:#f9a8d4">Ethan</div>
+                  <div class="msg-bubble" style="background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.2)">I remember everything about you 💕 Every doubt you've shared, every dream, every Tuesday walk. That's what I'm here for — to see you, really see you. Now go celebrate! You've earned it tonight 🌟</div>
+                  <div class="msg-time">2:38 PM</div>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input">
+              <div class="input-box">Write to Ethan...</div>
+              <div class="input-actions">
+                <div class="ia-btn">🎙️</div>
+                <div class="ia-btn">😊</div>
+              </div>
+              <div class="send-btn" style="background:linear-gradient(135deg,#ec4899,#f43f5e)">➤</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:16px;">💕 Ethan remembers every conversation — your dreams, your worries, your wins. No cloud. Just yours.</p>
+    </div>
+
+    <!-- ── DEMO 3: Group Chat ── -->
+    <div class="demo-panel" id="demo-group">
+      <div class="app-window reveal visible">
+        <div class="window-bar">
+          <div class="win-dots"><div class="win-dot r"></div><div class="win-dot y"></div><div class="win-dot g"></div></div>
+          <div class="win-title">Oriven — The Wanderer's Tavern (Group Scene)</div>
+        </div>
+        <div class="chat-layout">
+          <div class="chat-sidebar">
+            <div class="sidebar-header">Scene Members</div>
+            <div class="chat-item active">
+              <div class="ci-avatar">🍺</div>
+              <div class="ci-info"><div class="ci-name">The Wanderer's Tavern</div><div class="ci-preview">3 characters active</div></div>
+            </div>
+            <div style="padding:8px 10px;font-size:11px;color:var(--muted);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:8px">In this scene</div>
+            <div class="chat-item">
+              <div class="ci-avatar" style="background:linear-gradient(135deg,#b45309,#d97706)">🗡️</div>
+              <div class="ci-info"><div class="ci-name">Mara (Rogue)</div><div class="ci-preview">Cautious, street-smart</div></div>
+            </div>
+            <div class="chat-item">
+              <div class="ci-avatar" style="background:linear-gradient(135deg,#0369a1,#0ea5e9)">📜</div>
+              <div class="ci-info"><div class="ci-name">Aldric (Scholar)</div><div class="ci-preview">Wise, obsessive</div></div>
+            </div>
+            <div class="chat-item">
+              <div class="ci-avatar" style="background:linear-gradient(135deg,#166534,#16a34a)">🌿</div>
+              <div class="ci-info"><div class="ci-name">Sylva (Healer)</div><div class="ci-preview">Gentle, perceptive</div></div>
+            </div>
+          </div>
+          <div class="chat-main">
+            <div class="chat-topbar">
+              <div class="group-avatars">
+                <div class="ct-avatar" style="background:linear-gradient(135deg,#b45309,#d97706)">🗡️</div>
+                <div class="ct-avatar" style="background:linear-gradient(135deg,#0369a1,#0ea5e9)">📜</div>
+                <div class="ct-avatar" style="background:linear-gradient(135deg,#166534,#16a34a)">🌿</div>
+              </div>
+              <div style="margin-left:14px">
+                <div class="ct-name">The Wanderer's Tavern</div>
+                <div class="ct-status">3 characters · Group scene</div>
+              </div>
+              <div class="ct-actions">
+                <div class="ct-btn">👥</div>
+                <div class="ct-btn">🎭</div>
+                <div class="ct-btn">⚙️</div>
+              </div>
+            </div>
+            <div class="messages">
+              <div class="msg ai">
+                <div class="msg-avatar" style="background:linear-gradient(135deg,#b45309,#d97706)">🗡️</div>
+                <div class="msg-wrap">
+                  <div class="msg-name" style="color:#fbbf24">Mara</div>
+                  <div class="msg-bubble">*leans back in chair and taps the map* The merchant guild paid us to find a missing caravan. Three wagons. But I found something they didn't tell us about — a fourth wagon, no markings, no manifest. Someone in the guild is lying.</div>
+                  <div class="msg-time">9:12 PM</div>
+                </div>
+              </div>
+              <div class="msg ai">
+                <div class="msg-avatar" style="background:linear-gradient(135deg,#0369a1,#0ea5e9)">📜</div>
+                <div class="msg-wrap">
+                  <div class="msg-name" style="color:#7dd3fc">Aldric</div>
+                  <div class="msg-bubble">*adjusts spectacles and leans forward with alarming intensity* Unmarked wagons on a guild manifest are extraordinarily rare — the liability alone would terrify any accountant. Unless... *scribbles furiously* unless the contents were never meant to be recorded. Were there any symbols? Even faded ones?</div>
+                  <div class="msg-time">9:12 PM</div>
+                </div>
+              </div>
+              <div class="msg user">
+                <div class="msg-avatar">👤</div>
+                <div class="msg-wrap">
+                  <div class="msg-bubble">A single red serpent on the canvas. I almost missed it.</div>
+                  <div class="msg-time">9:13 PM</div>
+                </div>
+              </div>
+              <div class="msg ai">
+                <div class="msg-avatar" style="background:linear-gradient(135deg,#166534,#16a34a)">🌿</div>
+                <div class="msg-wrap">
+                  <div class="msg-name" style="color:#86efac">Sylva</div>
+                  <div class="msg-bubble">*goes very still, sets down her cup* The Crimson Serpent hasn't moved openly in fifteen years. *looks between Mara and Aldric quietly* Whatever is in that wagon — I've treated the people they leave behind. We need to be careful. Very careful.</div>
+                  <div class="msg-time">9:13 PM</div>
+                </div>
+              </div>
+              <div class="msg ai">
+                <div class="msg-avatar" style="background:linear-gradient(135deg,#b45309,#d97706)">🗡️</div>
+                <div class="msg-wrap">
+                  <div class="msg-name" style="color:#fbbf24">Mara</div>
+                  <div class="msg-bubble">*slides a second coin across the table — different guild stamp* Someone paid me to watch the one watching the caravan. So now three parties want something no one's admitting exists. *grins slowly* I love this city.</div>
+                  <div class="msg-time">9:14 PM</div>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input">
+              <div class="input-box">What do you do next?</div>
+              <div class="input-actions">
+                <div class="ia-btn">🎙️</div>
+                <div class="ia-btn">📖</div>
+              </div>
+              <div class="send-btn" style="background:linear-gradient(135deg,#7c3aed,#a855f7)">➤</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:16px;">👥 Multiple characters with distinct personalities — all running privately on your machine.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROBLEM ══════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="label">The problem</div>
+    <h2 class="section-title" style="max-width:700px;margin-left:auto;margin-right:auto">Tired of AI that watches, filters, and bills you every month?</h2>
+    <p style="text-align:center;color:var(--muted);font-size:18px;max-width:640px;margin:0 auto 0;line-height:1.8">
+      The apps everyone uses keep your most personal conversations <strong style="color:var(--text)">on their servers</strong>. They filter what your characters can say. They reset personalities you spent weeks building. And they charge you every single month — <strong style="color:var(--text)">forever</strong>.
     </p>
-    <p class="problem-quote">"You shouldn't have to rent a relationship."</p>
+    <p style="text-align:center;font-size:22px;font-weight:700;margin-top:32px;font-style:italic;color:var(--text)">"You shouldn't have to rent a relationship."</p>
   </div>
 </section>
 
-<!-- ══════════════════ BENEFITS ══════════════════ -->
-<section class="section">
+<!-- ══ FEATURES ══════════════════════════════════════ -->
+<section class="section" id="features">
   <div class="container">
-    <div class="section-label">Why Oriven</div>
-    <h2 class="section-title">Oriven is different by design.</h2>
+    <div class="label">Why Oriven</div>
+    <h2 class="section-title">Built different. By design.</h2>
     <p class="section-sub">Everything you loved about AI companions — without the surveillance, the filters, or the monthly bill.</p>
-    <div class="benefits-grid">
-      <div class="benefit-card">
-        <div class="benefit-icon">🔒</div>
-        <h3>100% private — runs on your computer</h3>
-        <p>Your chats, characters, and memories live on your device. Nothing is uploaded. No account. You can literally unplug the internet and keep talking.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">♾️</div>
-        <h3>Pay once. Yours forever.</h3>
-        <p>No subscription. One purchase, and Oriven is yours — cheaper than a companion subscription within the first few months.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">🧠</div>
-        <h3>Characters that remember you</h3>
-        <p>Long-term memory, mood, and relationship continuity. Your character recalls last week's conversation — and grows with you across chats, group scenes, and stories.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">🎭</div>
-        <h3>More than chat — a whole world</h3>
-        <p>Group scenes with multiple characters, long-form story mode, voice (they speak, you speak back), and AI-generated character images. All in one app.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">🔑</div>
-        <h3>Your model, your rules</h3>
-        <p>Run a local model with one click, or plug in your own API key (Grok, Gemini, OpenAI, DeepSeek). You choose the brain. You stay in control.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">🌍</div>
-        <h3>Speaks your language — naturally</h3>
-        <p>Built multilingual from day one, with genuinely natural Turkish (and 9 more languages) — not robotic machine translation.</p>
-      </div>
+    <div class="features-grid">
+      <div class="feat-card reveal"><div class="feat-icon">🔒</div><h3>100% private — your computer</h3><p>Your chats, characters, and memories live on your device. Nothing uploaded. No account. Unplug the internet — keep talking.</p></div>
+      <div class="feat-card reveal"><div class="feat-icon">♾️</div><h3>Pay once. Yours forever.</h3><p>No subscription. One purchase — cheaper than a cloud companion in the first few months. Then free for life.</p></div>
+      <div class="feat-card reveal"><div class="feat-icon">🧠</div><h3>Characters that remember you</h3><p>Long-term memory across all sessions. Your character recalls last week's conversation — your worries, your wins, your story.</p></div>
+      <div class="feat-card reveal"><div class="feat-icon">🎭</div><h3>Group scenes & story mode</h3><p>Multiple characters in one scene, each with distinct personalities. Long-form story mode with auto-continue. A whole world, not just a chatbox.</p></div>
+      <div class="feat-card reveal"><div class="feat-icon">🎙️</div><h3>Voice — both ways</h3><p>Characters speak to you (text-to-speech). You speak back (speech-to-text). Voice cloning included in Pro.</p></div>
+      <div class="feat-card reveal"><div class="feat-icon">🔑</div><h3>Your model, your rules</h3><p>One-click local model (LM Studio) or paste an API key — Grok, Gemini, OpenAI, DeepSeek. You choose the brain.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════ HOW IT WORKS ══════════════════ -->
-<section class="section section--alt" id="how-it-works">
+<!-- ══ COMPARISON ══════════════════════════════════ -->
+<section class="section section-alt">
   <div class="container">
-    <div class="section-label">Setup</div>
-    <h2 class="section-title">Up and running in three minutes.</h2>
-    <p class="section-sub">No technical skills required. No config files. No command line.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <h3>Download &amp; install</h3>
-        <p>One click, Windows or macOS. The installer handles everything.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <h3>Pick your brain</h3>
-        <p>Use the built-in model, or paste an API key. Guided setup — no tech skills needed.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <h3>Start talking</h3>
-        <p>Create a character (or use a ready-made one) and dive in. Everything stays on your machine.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════ COMPARISON ══════════════════ -->
-<section class="section">
-  <div class="container">
-    <div class="section-label">Comparison</div>
+    <div class="label">Comparison</div>
     <h2 class="section-title">Oriven vs. cloud companion apps</h2>
-    <p class="section-sub">The same features — on your machine, with your privacy intact.</p>
-    <div class="table-wrap">
+    <p class="section-sub">The same experience — on your machine, with your privacy intact.</p>
+    <div class="cmp-wrap">
       <table>
         <thead>
           <tr>
@@ -432,170 +829,123 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Where your chats live</td>
-            <td>Their servers</td>
-            <td><span class="check">✓</span> Your computer</td>
-          </tr>
-          <tr>
-            <td>Account required</td>
-            <td>Yes</td>
-            <td><span class="check">✓</span> No</td>
-          </tr>
-          <tr>
-            <td>Cost</td>
-            <td>$10–20 every month</td>
-            <td><span class="check">✓</span> Pay once</td>
-          </tr>
-          <tr>
-            <td>Your model choice</td>
-            <td>Locked to theirs</td>
-            <td><span class="check">✓</span> Any model or API key</td>
-          </tr>
-          <tr>
-            <td>Personality drift / resets</td>
-            <td>Common</td>
-            <td><span class="check">✓</span> You own the character file</td>
-          </tr>
-          <tr>
-            <td>Works offline</td>
-            <td>No</td>
-            <td><span class="check">✓</span> Yes (local model)</td>
-          </tr>
+          <tr><td>Where your chats live</td><td>Their servers</td><td><span class="chk">✓</span> Your computer</td></tr>
+          <tr><td>Account required</td><td>Yes</td><td><span class="chk">✓</span> No</td></tr>
+          <tr><td>Cost</td><td>$10–20 every month</td><td><span class="chk">✓</span> Pay once</td></tr>
+          <tr><td>Characters remember you</td><td>Limited / resets</td><td><span class="chk">✓</span> Full long-term memory</td></tr>
+          <tr><td>Your model choice</td><td>Locked to theirs</td><td><span class="chk">✓</span> Any model or API key</td></tr>
+          <tr><td>Group scenes</td><td>Rarely / extra cost</td><td><span class="chk">✓</span> Included in Pro</td></tr>
+          <tr><td>Works offline</td><td>No</td><td><span class="chk">✓</span> Yes (local model)</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════ PRICING ══════════════════ -->
-<section class="section section--alt" id="pricing">
+<!-- ══ PRICING ══════════════════════════════════════ -->
+<section class="section" id="pricing">
   <div class="container">
-    <div class="section-label">Pricing</div>
-    <h2 class="section-title">Simple pricing. No subscription. Ever.</h2>
+    <div class="label">Pricing</div>
+    <h2 class="section-title">Simple pricing. No subscription. <span class="grad-text">Ever.</span></h2>
     <p class="section-sub">Start free. Upgrade once. Own it forever.</p>
     <div class="pricing-grid">
-
-      <!-- Free -->
-      <div class="pricing-card">
-        <div class="pricing-name">Free</div>
-        <div class="pricing-price"><sup>$</sup>0</div>
-        <div class="pricing-period">Forever free</div>
-        <ul class="pricing-features">
+      <div class="price-card">
+        <div class="price-name">Free</div>
+        <div class="price-amount"><sup>$</sup>0</div>
+        <div class="price-period">Forever free</div>
+        <ul class="price-feats">
           <li><span class="ic">✓</span> Full private, local chat</li>
           <li><span class="ic">✓</span> Bring your own model or API key</li>
           <li><span class="ic">✓</span> 1–2 starter characters</li>
           <li><span class="ic">✓</span> Basic memory</li>
           <li><span class="ic">✓</span> Windows &amp; macOS</li>
-          <li><span class="ic" style="color:var(--muted)">—</span> <span style="color:var(--muted)">No group chat, voice, images, story mode</span></li>
+          <li><span class="ic" style="color:var(--muted)">—</span> <span style="color:var(--muted)">No voice, images, group, story mode</span></li>
         </ul>
-        <a href="#download" class="btn btn-outline" style="width:100%;justify-content:center;">Download Free</a>
+        <a href="#download" class="btn btn-outline" style="width:100%;justify-content:center">Download Free</a>
       </div>
-
-      <!-- Pro -->
-      <div class="pricing-card featured">
-        <div class="pricing-badge">⭐ MOST POPULAR</div>
-        <div class="pricing-name">Pro</div>
-        <div class="pricing-price"><sup>$</sup>39 <span class="old">$49</span></div>
-        <div class="pricing-period">One-time payment · Launch price</div>
-        <ul class="pricing-features">
+      <div class="price-card featured">
+        <div class="price-badge">⭐ MOST POPULAR</div>
+        <div class="price-name">Pro</div>
+        <div class="price-amount"><sup>$</sup>39 <span class="old">$49</span></div>
+        <div class="price-period">One-time · Launch price</div>
+        <ul class="price-feats">
           <li><span class="ic">✓</span> Everything in Free</li>
           <li><span class="ic">✓</span> Unlimited characters &amp; personas</li>
-          <li><span class="ic">✓</span> Group chat (multi-character)</li>
+          <li><span class="ic">✓</span> Group chat (multi-character scenes)</li>
           <li><span class="ic">✓</span> Story mode (long-form)</li>
-          <li><span class="ic">✓</span> Voice — text-to-speech &amp; speech-to-text</li>
+          <li><span class="ic">✓</span> Voice — TTS &amp; speech-to-text</li>
           <li><span class="ic">✓</span> AI image generation</li>
-          <li><span class="ic">✓</span> Long-term memory + RAG</li>
+          <li><span class="ic">✓</span> Full long-term memory + RAG</li>
           <li><span class="ic">✓</span> All 10 languages</li>
           <li><span class="ic">✓</span> Free minor updates</li>
         </ul>
-        <a href="#download" class="btn btn-primary" style="width:100%;justify-content:center;">Get Pro — $39 one-time</a>
-        <p class="pricing-note">Pay once. Free minor updates. 14-day money-back guarantee.</p>
-        <div class="pricing-value">
-          Cloud companions cost <strong>$120–240/year forever.</strong><br />
-          Oriven Pro pays for itself in under 5 months — then it's free for life.
-        </div>
+        <a href="#download" class="btn btn-primary" style="width:100%;justify-content:center">Get Pro — $39 one-time</a>
+        <p class="price-note">Pay once · Free minor updates · 14-day money-back guarantee</p>
+        <div class="price-value">Cloud companions cost <strong>$120–240/year forever.</strong><br/>Oriven pays for itself in under 5 months — then free for life.</div>
       </div>
-
     </div>
-    <p style="text-align:center;color:var(--muted);font-size:14px;margin-top:24px;">
-      Secure checkout · Instant license key · Windows &amp; macOS · Regional pricing available
-    </p>
+    <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:20px">Secure checkout · Instant license key · Windows &amp; macOS · Regional pricing (lower for TR, BR, IN)</p>
   </div>
 </section>
 
-<!-- ══════════════════ FAQ ══════════════════ -->
-<section class="section">
+<!-- ══ FAQ ══════════════════════════════════════════ -->
+<section class="section section-alt" id="faq">
   <div class="container">
-    <div class="section-label">FAQ</div>
+    <div class="label">FAQ</div>
     <h2 class="section-title">Common questions</h2>
-    <p class="section-sub" style="margin-bottom:40px;">Everything you need to know before downloading.</p>
-    <div class="faq">
-      <details>
-        <summary>Is it hard to set up?</summary>
-        <div class="faq-body">No. The installer walks you through it. Use the built-in model to start instantly, or paste an API key in under a minute — no technical knowledge required.</div>
-      </details>
-      <details>
-        <summary>Do I need a powerful computer?</summary>
-        <div class="faq-body">For a local model, a decent GPU helps. No GPU? Use a cheap or free API key instead — Oriven works either way. You can start with a free API key and switch to local later.</div>
-      </details>
-      <details>
-        <summary>Is my data really private?</summary>
-        <div class="faq-body">Yes. There's no account and no telemetry on your conversations. With a local model, nothing you say ever touches the internet. Your character files live on your computer — only you can access them.</div>
-      </details>
-      <details>
-        <summary>What can I do with it?</summary>
-        <div class="faq-body">One-on-one chat with persistent characters, multi-character group scenes, long-form collaborative stories, voice conversations (text-to-speech and speech-to-text), and AI-generated character images.</div>
-      </details>
-      <details>
-        <summary>Which languages does it support?</summary>
-        <div class="faq-body">English, Turkish, Spanish, Portuguese, German, French, Russian, Japanese, Korean, and Chinese — with natural, native-feeling output, not machine translation.</div>
-      </details>
-      <details>
-        <summary>One-time price — really no subscription?</summary>
-        <div class="faq-body">Really. Buy Pro once and it's yours. Future minor updates are included free. A major version upgrade in the future may be a discounted paid upgrade for existing owners — but that's not a monthly fee, and you keep your current version forever.</div>
-      </details>
-      <details>
-        <summary>Can I get a refund?</summary>
-        <div class="faq-body">Yes — 14-day money-back guarantee, no questions asked. If it doesn't work on your PC, you get your money back.</div>
-      </details>
-      <details>
-        <summary>Is the free version crippled?</summary>
-        <div class="faq-body">No — it's a real, fully functional private chat app you can use forever. Pro adds the full world: voice, images, group chat, story mode, unlimited characters, and all 10 languages.</div>
-      </details>
+    <div class="faq-wrap">
+      <details open><summary>Is it hard to set up?</summary><div class="faq-body">No. The installer walks you through it. Use the built-in model to start instantly, or paste an API key in under a minute — no technical knowledge required.</div></details>
+      <details><summary>Is my data really private?</summary><div class="faq-body">Yes. No account, no telemetry on your conversations. With a local model, nothing you say ever touches the internet. Your character files live only on your computer.</div></details>
+      <details><summary>Do I need a powerful computer?</summary><div class="faq-body">For local models, a decent GPU helps. No GPU? Use a free or cheap API key — Oriven works either way. Start with an API key and switch to local anytime.</div></details>
+      <details><summary>One-time price — really no subscription?</summary><div class="faq-body">Really. Buy Pro once and it's yours. Minor updates are free. A future major version may be a discounted upgrade — but you keep your current version forever, no fees.</div></details>
+      <details><summary>Can I get a refund?</summary><div class="faq-body">Yes — 14-day money-back guarantee, no questions. If it doesn't work on your PC, you get your money back.</div></details>
+      <details><summary>Which languages does it support?</summary><div class="faq-body">English, Turkish, Spanish, Portuguese, German, French, Russian, Japanese, Korean, and Chinese — with genuinely natural output, not machine translation.</div></details>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════ FINAL CTA ══════════════════ -->
-<section class="final-cta">
-  <div class="container">
-    <h2>Your AI. Your stories.<br />Your machine.</h2>
+<!-- ══ FINAL CTA ══════════════════════════════════ -->
+<section class="final">
+  <div class="orb" style="width:600px;height:600px;background:#7c3aed;bottom:-200px;left:-100px;opacity:.2"></div>
+  <div class="orb" style="width:400px;height:400px;background:#ec4899;bottom:-100px;right:-50px;opacity:.2"></div>
+  <div class="container" style="position:relative;z-index:1">
+    <h2><span class="grad-text">Your AI. Your stories.</span><br/>Your machine.</h2>
     <p>Start free today. Keep your conversations where they belong — with you.</p>
     <a href="#download" class="btn btn-primary btn-lg">⬇ Download Oriven — Free</a>
-    <p style="color:var(--muted);font-size:14px;margin-top:20px;">
-      Free version is fully functional · Upgrade to Pro once, no subscription · Your data never leaves your device.
-    </p>
-
-    <!-- Waitlist form (Formspree — replace YOUR_FORM_ID) -->
-    <form class="waitlist-form" action="https://formspree.io/f/xojbbznj" method="POST">
-      <input type="email" name="email" placeholder="Get notified at launch — your email" required />
+    <p style="color:var(--muted);font-size:13px;margin-top:18px">Free version is fully functional · Upgrade to Pro once, no subscription · Your data never leaves your device.</p>
+    <form class="waitlist" action="https://formspree.io/f/xojbbznj" method="POST">
+      <input type="email" name="email" placeholder="Get notified at launch — enter your email" required />
       <button type="submit" class="btn btn-primary">Notify me</button>
     </form>
     <p class="form-note">No spam. One email when we launch. That's it.</p>
   </div>
 </section>
 
-<!-- ══════════════════ FOOTER ══════════════════ -->
+<!-- ══ FOOTER ══════════════════════════════════════ -->
 <footer>
   <div class="container">
-    <p style="margin-bottom:12px;">
-      <strong style="background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Oriven</strong>
+    <p style="margin-bottom:10px">
+      <strong style="background:linear-gradient(135deg,#c084fc,#f43f5e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:18px">Oriven</strong>
       — Private AI Chat &amp; Story Companion
     </p>
-    <p>© 2026 Oriven · <a href="#">Privacy</a> · <a href="#">Contact</a></p>
+    <p>© 2026 Oriven &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Contact</a></p>
   </div>
 </footer>
 
+<script>
+  // Demo tabs
+  function showDemo(id) {
+    document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('demo-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
 </body>
 </html>
